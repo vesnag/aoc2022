@@ -5,26 +5,30 @@ namespace AOC2022\day1;
 final class Day1Part1
 {
 
-   /**
-   * @param array<int,mixed> $data
-   */
-    public static function getMaxTotalCalories(array $data): int
+    public static function getMaxTotalCalories(string $filename): int
     {
-        $maxSum = 0;
-        $currentSum = 0;
+      $handle = fopen('input/day1/' . $filename, 'r');
+      if (!$handle) {
+        return 0;
+      }
 
-        foreach ($data as $item) {
-          if (!is_numeric($item)) {
-            if ($currentSum > $maxSum) {
-              $maxSum = $currentSum;
-            }
-            $currentSum = 0;
-            continue;
-          }
-          $currentSum += (int) $item;
+      $maxSum = 0;
+      $currentSum = 0;
+
+      while (($line = fgets($handle)) !== false) {
+        if (is_numeric($line)) {
+          $currentSum += (int) $line;
+          continue;
         }
 
-        return $maxSum;
+        if ($currentSum > $maxSum) {
+          $maxSum = $currentSum;
+        }
+        $currentSum = 0;
+      }
+      fclose($handle);
+
+      return $maxSum;
     }
 
 }
