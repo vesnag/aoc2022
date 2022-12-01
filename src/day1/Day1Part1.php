@@ -13,21 +13,33 @@ final class Day1Part1
       }
 
       $maxSum = 0;
-      $currentSum = 0;
+      $currentChunkSum = 0;
 
+      $chunkSumCalculated = true;
       while (($line = fgets($handle)) !== false) {
         if (is_numeric($line)) {
-          $currentSum += (int) $line;
+          $chunkSumCalculated = false;
+          $currentChunkSum += (int) $line;
           continue;
         }
 
-        if ($currentSum > $maxSum) {
-          $maxSum = $currentSum;
-        }
-        $currentSum = 0;
+        $maxSum = self::returnMaxSum($currentChunkSum, $maxSum);
+        $currentChunkSum = 0;
       }
+
+      if (!$chunkSumCalculated) {
+        $maxSum = self::returnMaxSum($currentChunkSum, $maxSum);
+      }
+
       fclose($handle);
 
+      return $maxSum;
+    }
+
+    private static function returnMaxSum(int $currentSum, int $maxSum): int {
+      if ($currentSum > $maxSum) {
+        return $currentSum;
+      }
       return $maxSum;
     }
 
