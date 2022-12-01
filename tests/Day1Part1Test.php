@@ -10,12 +10,12 @@ final class Day1Part1Test extends TestCase {
   public function testMaxSum(): void {
     $this->assertEquals(
       24000,
-      Day1Part1::getMaxSum($this->readInput('test-input.txt'))
+      Day1Part1::getMaxTotalCalories($this->readInput('test-input.txt'))
     );
 
     $this->assertEquals(
       70698,
-      Day1Part1::getMaxSum($this->readInput('input.txt'))
+      Day1Part1::getMaxTotalCalories($this->readInput('input.txt'))
     );
   }
 

@@ -4,10 +4,11 @@ namespace AOC2022\day1;
 
 final class Day1Part1
 {
-  /**
+
+   /**
    * @param array<int,mixed> $data
    */
-    public static function getMaxSum(array $data): int
+    public static function getMaxTotalCalories(array $data): int
     {
         $maxSum = 0;
         $currentSum = 0;
@@ -25,4 +26,5 @@ final class Day1Part1
 
         return $maxSum;
     }
+
 }
