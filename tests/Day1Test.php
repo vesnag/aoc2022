@@ -28,6 +28,11 @@ final class Day1Test extends TestCase {
       206643,
       Day1::getMaxTotalCalories('input.txt', 3)
     );
+
+    $this->assertEquals(
+      0,
+      Day1::getMaxTotalCalories('input.txt', 0)
+    );
   }
 
 }
