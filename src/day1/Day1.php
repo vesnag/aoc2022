@@ -35,6 +35,8 @@ final class Day1
             self::addToSlidingWindow($slidingWindowData, $currentChunkSum, $windowSize);
         }
 
+        fclose($handle);
+
         return (int) array_sum($slidingWindowData);
     }
 
