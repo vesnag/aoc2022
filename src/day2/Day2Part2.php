@@ -50,7 +50,7 @@ final class Day2Part2
             return self::OUTCOME_DRAW;
         }
 
-        if ((in_array([$shape1, $shape2], array_map(fn (array $winCombination) => array_reverse($winCombination), self::getWinCombinations())))) {
+        if ((in_array([$shape1, $shape2], self::getLossCombinations()))) {
             return self::OUTCOME_WIN;
         }
 
