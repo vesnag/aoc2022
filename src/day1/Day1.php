@@ -17,7 +17,8 @@ final class Day1
 
         $currentChunkSum = 0;
 
-        $maxSumArray = [];
+        $windowSize = $numberOfElves;
+        $slidingWindowData = [];
         $chunkSumCalculated = true;
         while (($line = fgets($handle)) !== false) {
             if (is_numeric($line)) {
@@ -25,23 +26,45 @@ final class Day1
                 $currentChunkSum += (int) $line;
                 continue;
             }
-
-            $maxSumArray[] = $currentChunkSum;
+            self::addToSlidingWindow($slidingWindowData, $currentChunkSum, $windowSize);
             $currentChunkSum = 0;
             $chunkSumCalculated = true;
         }
 
         if (!$chunkSumCalculated) {
-            $maxSumArray[] = $currentChunkSum;
+            self::addToSlidingWindow($slidingWindowData, $currentChunkSum, $windowSize);
         }
 
-        rsort($maxSumArray);
+        return (int) array_sum($slidingWindowData);
+    }
 
-        $sumCalories = 0;
-        for ($i = 0; $i < $numberOfElves; $i++) {
-            $sumCalories += $maxSumArray[$i];
+   /**
+   * @param array<int, int> $slidingWindowData
+   */
+    private static function addToSlidingWindow(array &$slidingWindowData, int $currentChunkSum, int $windowSize): void
+    {
+        $slidingWindowDataSize = count($slidingWindowData);
+
+        if ($slidingWindowDataSize < $windowSize) {
+            self::addSumToSlidingWindowAndSort($slidingWindowData, $currentChunkSum);
+            return;
         }
 
-        return $sumCalories;
+        $slidingWindowMinValue = $slidingWindowData[0];
+        if ($currentChunkSum <= $slidingWindowMinValue) {
+            return;
+        }
+
+        self::addSumToSlidingWindowAndSort($slidingWindowData, $currentChunkSum);
+        array_shift($slidingWindowData);
+    }
+
+   /**
+   * @param array<int, int> $slidingWindowData
+   */
+    private static function addSumToSlidingWindowAndSort(array &$slidingWindowData, int $currentChunkSum): void
+    {
+        $slidingWindowData[] = $currentChunkSum;
+        sort($slidingWindowData);
     }
 }
