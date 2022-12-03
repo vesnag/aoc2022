@@ -51,11 +51,7 @@ final class Day2Part1
             return self::OUTCOME_DRAW;
         }
 
-        if (
-            ($shape2 === self::SHAPE_ROCK && $shape1 === self::SHAPE_SCISSORS) ||
-            ($shape2 === self::SHAPE_PAPER && $shape1 === self::SHAPE_ROCK) ||
-            ($shape2 === self::SHAPE_SCISSORS && $shape1 === self::SHAPE_PAPER)
-        ) {
+        if ((in_array([$shape1, $shape2], array_map(fn (array $winCombination) => array_reverse($winCombination), self::getWinCombinations())))) {
             return self::OUTCOME_WIN;
         }
 
@@ -105,4 +101,16 @@ final class Day2Part1
 
          return 3;
      }
+
+    /**
+     * @return array<int, array<int, string>>
+     */
+    private static function getWinCombinations(): array
+    {
+        return [
+          [self::SHAPE_ROCK, self::SHAPE_SCISSORS],
+          [self::SHAPE_PAPER, self::SHAPE_ROCK],
+          [self::SHAPE_SCISSORS, self::SHAPE_PAPER],
+        ];
+    }
 }
