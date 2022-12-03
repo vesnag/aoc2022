@@ -45,15 +45,12 @@ final class Day1
    */
     private static function addToSlidingWindow(array &$slidingWindowData, int $currentChunkSum, int $windowSize): void
     {
-        $slidingWindowDataSize = count($slidingWindowData);
-
-        if ($slidingWindowDataSize < $windowSize) {
+        if (count($slidingWindowData) < $windowSize) {
             self::addSumToSlidingWindowAndSort($slidingWindowData, $currentChunkSum);
             return;
         }
 
-        $slidingWindowMinValue = $slidingWindowData[0];
-        if ($currentChunkSum <= $slidingWindowMinValue) {
+        if ($currentChunkSum <= $slidingWindowData[0]) {
             return;
         }
 
