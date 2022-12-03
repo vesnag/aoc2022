@@ -34,6 +34,5 @@ final class Day1Test extends TestCase
             0,
             Day1::getMaxTotalCalories('input.txt', 0)
         );
-
     }
 }

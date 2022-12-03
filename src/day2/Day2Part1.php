@@ -12,7 +12,29 @@ final class Day2Part1
     private const OUTCOME_DRAW = 'draw';
     private const OUTCOME_LOSS = 'loss';
 
-    public static function getTotalScore(string $filename): int
+    /**
+     * @var array<int, array<int, string>> $winningCombinations
+     */
+    private array $winningCombinations;
+
+    /**
+     * @return array<string,int>
+     */
+    private array $shapeScores;
+
+    /**
+     * @return array<string, string>
+     */
+    private array $shapeNames;
+
+    public function __construct()
+    {
+        $this->winningCombinations = $this->getWinCombinations();
+        $this->shapeScores = $this->shapeScores();
+        $this->shapeNames = $this->shapeNames();
+    }
+
+    public function getTotalScore(string $filename): int
     {
         $handle = fopen('input/day2/' . $filename, 'r');
         if (!$handle) {
@@ -22,30 +44,29 @@ final class Day2Part1
         $score = 0;
         while (($line = fgets($handle)) !== false) {
             $shapeDecisions = explode(' ', $line);
-            $shapeDecision1 = self::getShapeName()[trim($shapeDecisions[0])];
-            $shapeDecision2 = self::getShapeName()[trim($shapeDecisions[1])];
-
-            $score += self::getRoundScores($shapeDecision1, $shapeDecision2);
+            $shapeDecision1 = $this->shapeNames[trim($shapeDecisions[0])];
+            $shapeDecision2 = $this->shapeNames[trim($shapeDecisions[1])];
+            $score += $this->getRoundScores($shapeDecision1, $shapeDecision2);
         }
 
         return $score;
     }
 
-     private static function getRoundScores(string $shape1, string $shape2): int
-     {
-         $shape2Score = self::getShapeScores($shape2);
-         $outcomeScore = self::getScoresOfOutcomeOfTheRound($shape1, $shape2);
+    private function getRoundScores(string $shape1, string $shape2): int
+    {
+        $shape2Score = $this->shapeScores[$shape2];
+        $outcomeScore = $this->getScoresOfOutcomeOfTheRound($shape1, $shape2);
 
-         return $shape2Score + $outcomeScore;
-     }
+        return $shape2Score + $outcomeScore;
+    }
 
-     private static function getScoresOfOutcomeOfTheRound(string $shape1, string $shape2): int
-     {
-         $outcome = self::getRoundOutcome($shape1, $shape2);
-         return self::getOutcomeScores($outcome);
-     }
+    private function getScoresOfOutcomeOfTheRound(string $shape1, string $shape2): int
+    {
+        $outcome = self::getRoundOutcome($shape1, $shape2);
+        return self::getOutcomeScores($outcome);
+    }
 
-    private static function getRoundOutcome(string $shape1, string $shape2): string
+    private function getRoundOutcome(string $shape1, string $shape2): string
     {
         if ($shape1 === $shape2) {
             return self::OUTCOME_DRAW;
@@ -58,59 +79,54 @@ final class Day2Part1
         return self::OUTCOME_LOSS;
     }
 
-     private static function getShapeScores(string $shape): int
-     {
-         return self::shapeScores()[$shape];
-     }
+    private function getOutcomeScores(string $outcome): int
+    {
+        if (self::OUTCOME_WIN === $outcome) {
+            return 6;
+        }
+        if (self::OUTCOME_LOSS === $outcome) {
+            return 0;
+        }
+
+        return 3;
+    }
 
     /**
     * @return array<string,int>
     */
-     private static function shapeScores(): array
-     {
-         return [
-           self::SHAPE_ROCK => 1,
-           self::SHAPE_PAPER => 2,
-           self::SHAPE_SCISSORS => 3,
-         ];
-     }
+    private function shapeScores(): array
+    {
+        return [
+            self::SHAPE_ROCK => 1,
+            self::SHAPE_PAPER => 2,
+            self::SHAPE_SCISSORS => 3,
+        ];
+    }
 
     /**
     * @return array<string,string>
     */
-     private static function getShapeName(): array
-     {
-         return [
-           'A' => self::SHAPE_ROCK,
-           'B' => self::SHAPE_PAPER,
-           'C' => self::SHAPE_SCISSORS,
-           'X' => self::SHAPE_ROCK,
-           'Y' => self::SHAPE_PAPER,
-           'Z' => self::SHAPE_SCISSORS,
-         ];
-     }
-
-     private static function getOutcomeScores(string $outcome): int
-     {
-         if (self::OUTCOME_WIN === $outcome) {
-             return 6;
-         }
-         if (self::OUTCOME_LOSS === $outcome) {
-             return 0;
-         }
-
-         return 3;
-     }
+    private function shapeNames(): array
+    {
+        return [
+            'A' => self::SHAPE_ROCK,
+            'B' => self::SHAPE_PAPER,
+            'C' => self::SHAPE_SCISSORS,
+            'X' => self::SHAPE_ROCK,
+            'Y' => self::SHAPE_PAPER,
+            'Z' => self::SHAPE_SCISSORS,
+        ];
+    }
 
     /**
      * @return array<int, array<int, string>>
      */
-    private static function getWinCombinations(): array
+    private function getWinCombinations(): array
     {
         return [
-          [self::SHAPE_ROCK, self::SHAPE_SCISSORS],
-          [self::SHAPE_PAPER, self::SHAPE_ROCK],
-          [self::SHAPE_SCISSORS, self::SHAPE_PAPER],
+            [self::SHAPE_ROCK, self::SHAPE_SCISSORS],
+            [self::SHAPE_PAPER, self::SHAPE_ROCK],
+            [self::SHAPE_SCISSORS, self::SHAPE_PAPER],
         ];
     }
 }

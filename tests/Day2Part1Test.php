@@ -11,22 +11,22 @@ final class Day2Part1Test extends TestCase
     {
         $this->assertEquals(
             15,
-            Day2Part1::getTotalScore('test-input.txt')
+            (new Day2Part1())->getTotalScore('test-input.txt')
         );
 
         $this->assertEquals(
             16,
-            Day2Part1::getTotalScore('test-input2.txt')
+            (new Day2Part1())->getTotalScore('test-input2.txt')
         );
 
         $this->assertEquals(
             8,
-            Day2Part1::getTotalScore('test-input3.txt')
+            (new Day2Part1())->getTotalScore('test-input3.txt')
         );
 
         $this->assertEquals(
             12156,
-            Day2Part1::getTotalScore('input.txt')
+            (new Day2Part1())->getTotalScore('input.txt')
         );
     }
 }
