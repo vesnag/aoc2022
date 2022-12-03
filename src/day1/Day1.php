@@ -18,7 +18,7 @@ final class Day1
         $currentChunkSum = 0;
 
         $windowSize = $numberOfElves;
-        $slidingWindowData = [];
+        $caloriesCountWindow = [];
         $chunkSumCalculated = true;
         while (($line = fgets($handle)) !== false) {
             if (is_numeric($line)) {
@@ -26,44 +26,44 @@ final class Day1
                 $currentChunkSum += (int) $line;
                 continue;
             }
-            self::addToSlidingWindow($slidingWindowData, $currentChunkSum, $windowSize);
+            self::addToTotalCaloriesCount($caloriesCountWindow, $currentChunkSum, $windowSize);
             $currentChunkSum = 0;
             $chunkSumCalculated = true;
         }
 
         if (!$chunkSumCalculated) {
-            self::addToSlidingWindow($slidingWindowData, $currentChunkSum, $windowSize);
+            self::addToTotalCaloriesCount($caloriesCountWindow, $currentChunkSum, $windowSize);
         }
 
         fclose($handle);
 
-        return (int) array_sum($slidingWindowData);
+        return (int) array_sum($caloriesCountWindow);
     }
 
    /**
-   * @param array<int, int> $slidingWindowData
+   * @param array<int, int> $caloriesCountWindow
    */
-    private static function addToSlidingWindow(array &$slidingWindowData, int $currentChunkSum, int $windowSize): void
+    private static function addToTotalCaloriesCount(array &$caloriesCountWindow, int $currentChunkSum, int $windowSize): void
     {
-        if (count($slidingWindowData) < $windowSize) {
-            self::addSumToSlidingWindowAndSort($slidingWindowData, $currentChunkSum);
+        if (count($caloriesCountWindow) < $windowSize) {
+            self::addToTotalCaloriesCountAndSort($caloriesCountWindow, $currentChunkSum);
             return;
         }
 
-        if ($currentChunkSum <= $slidingWindowData[0]) {
+        if ($currentChunkSum <= $caloriesCountWindow[0]) {
             return;
         }
 
-        self::addSumToSlidingWindowAndSort($slidingWindowData, $currentChunkSum);
-        array_shift($slidingWindowData);
+        self::addToTotalCaloriesCountAndSort($caloriesCountWindow, $currentChunkSum);
+        array_shift($caloriesCountWindow);
     }
 
    /**
-   * @param array<int, int> $slidingWindowData
+   * @param array<int, int> $totalCaloriesCountWindow
    */
-    private static function addSumToSlidingWindowAndSort(array &$slidingWindowData, int $currentChunkSum): void
+    private static function addToTotalCaloriesCountAndSort(array &$totalCaloriesCountWindow, int $currentChunkSum): void
     {
-        $slidingWindowData[] = $currentChunkSum;
-        sort($slidingWindowData);
+        $totalCaloriesCountWindow[] = $currentChunkSum;
+        sort($totalCaloriesCountWindow);
     }
 }
