@@ -41,11 +41,11 @@ final class Day2Part1
 
      private static function getScoresOfOutcomeOfTheRound(string $shape1, string $shape2): int
      {
-         $outcome = self::getOutcome($shape1, $shape2);
+         $outcome = self::getRoundOutcome($shape1, $shape2);
          return self::getOutcomeScores($outcome);
      }
 
-    private static function getOutcome(string $shape1, string $shape2): string
+    private static function getRoundOutcome(string $shape1, string $shape2): string
     {
         if ($shape1 === $shape2) {
             return self::OUTCOME_DRAW;
