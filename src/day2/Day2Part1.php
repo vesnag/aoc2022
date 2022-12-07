@@ -13,23 +13,17 @@ final class Day2Part1
     private const OUTCOME_LOSS = 'loss';
 
     /**
-     * @var array<int, array<int, string>> $winningCombinations
-     */
-    private array $winningCombinations;
-
-    /**
-     * @return array<string,int>
+     * @var array<string,int>
      */
     private array $shapeScores;
 
     /**
-     * @return array<string, string>
+     * @var array<string, string>
      */
     private array $shapeNames;
 
     public function __construct()
     {
-        $this->winningCombinations = $this->getWinCombinations();
         $this->shapeScores = $this->shapeScores();
         $this->shapeNames = $this->shapeNames();
     }

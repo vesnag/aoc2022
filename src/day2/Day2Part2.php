@@ -23,12 +23,12 @@ final class Day2Part2
     private array $loosingCombinations;
 
     /**
-    * @return array<string,int>
+    * @var array<string,int>
     */
     private array $shapeScores;
 
     /**
-     * @return array<string, string>
+     * @var array<string, string>
      */
     private array $shapeNames;
 
