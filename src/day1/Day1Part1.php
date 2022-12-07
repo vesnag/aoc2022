@@ -14,21 +14,18 @@ final class Day1Part1
         $maxSum = 0;
         $currentChunkSum = 0;
 
-        $chunkSumCalculated = true;
         while (($line = fgets($handle)) !== false) {
             if (is_numeric($line)) {
-                $chunkSumCalculated = false;
                 $currentChunkSum += (int) $line;
                 continue;
             }
 
             $maxSum = self::returnMaxSum($currentChunkSum, $maxSum);
+
             $currentChunkSum = 0;
         }
 
-        if (!$chunkSumCalculated) {
-            $maxSum = self::returnMaxSum($currentChunkSum, $maxSum);
-        }
+        $maxSum = self::returnMaxSum($currentChunkSum, $maxSum);
 
         fclose($handle);
 

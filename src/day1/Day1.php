@@ -16,54 +16,55 @@ final class Day1
         }
 
         $currentChunkSum = 0;
+        $currentMin = 0;
 
-        $windowSize = $numberOfElves;
-        $caloriesCountWindow = [];
-        $chunkSumCalculated = true;
+        $caloriesSum = 0;
+        $i = 0;
+        $maxCaloriesBucket = [];
         while (($line = fgets($handle)) !== false) {
             if (is_numeric($line)) {
-                $chunkSumCalculated = false;
                 $currentChunkSum += (int) $line;
                 continue;
             }
-            self::addToTotalCaloriesCount($caloriesCountWindow, $currentChunkSum, $windowSize);
+
+            if ($i < $numberOfElves) {
+                $caloriesSum += $currentChunkSum;
+                $maxCaloriesBucket[] = $currentChunkSum;
+                $currentMin = min($maxCaloriesBucket);
+                $currentChunkSum = 0;
+                $i++;
+                continue;
+            }
+
+            $caloriesSum = self::maxCaloriesSum($currentChunkSum, $currentMin, $maxCaloriesBucket, $caloriesSum);
+            $currentMin = $maxCaloriesBucket[0];
             $currentChunkSum = 0;
-            $chunkSumCalculated = true;
         }
 
-        if (!$chunkSumCalculated) {
-            self::addToTotalCaloriesCount($caloriesCountWindow, $currentChunkSum, $windowSize);
-        }
+        $caloriesSum = self::maxCaloriesSum($currentChunkSum, $currentMin, $maxCaloriesBucket, $caloriesSum);
 
         fclose($handle);
 
-        return (int) array_sum($caloriesCountWindow);
+        return $caloriesSum;
     }
 
-   /**
-   * @param array<int, int> $caloriesCountWindow
-   */
-    private static function addToTotalCaloriesCount(array &$caloriesCountWindow, int $currentChunkSum, int $windowSize): void
+    /**
+    * @param array<int, int> $maxCaloriesBucket
+    */
+    private static function maxCaloriesSum(int $currentChunkSum, int $currentMin, array &$maxCaloriesBucket, int $caloriesSum): int
     {
-        if (count($caloriesCountWindow) < $windowSize) {
-            self::addToTotalCaloriesCountAndSort($caloriesCountWindow, $currentChunkSum);
-            return;
+        if ($currentChunkSum <= $currentMin) {
+            return $caloriesSum;
         }
 
-        if ($currentChunkSum <= $caloriesCountWindow[0]) {
-            return;
-        }
+        $caloriesSum += $currentChunkSum;
+        $maxCaloriesBucket[] = $currentChunkSum;
+        sort($maxCaloriesBucket);
 
-        self::addToTotalCaloriesCountAndSort($caloriesCountWindow, $currentChunkSum);
-        array_shift($caloriesCountWindow);
+        $caloriesSum -= $maxCaloriesBucket[0];
+        array_shift($maxCaloriesBucket);
+
+        return $caloriesSum;
     }
 
-   /**
-   * @param array<int, int> $totalCaloriesCountWindow
-   */
-    private static function addToTotalCaloriesCountAndSort(array &$totalCaloriesCountWindow, int $currentChunkSum): void
-    {
-        $totalCaloriesCountWindow[] = $currentChunkSum;
-        sort($totalCaloriesCountWindow);
-    }
 }
