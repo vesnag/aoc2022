@@ -2,7 +2,7 @@
 
 namespace AOC2022\day2;
 
-final class Day2Part2
+final class Day2
 {
     private const SHAPE_ROCK = 'rock';
     private const SHAPE_PAPER = 'paper';
@@ -40,7 +40,7 @@ final class Day2Part2
         $this->shapeNames = $this->shapeNames();
     }
 
-    public function getTotalScore(string $filename): int
+    public function getTotalScore(string $filename, bool $decrypt = false): int
     {
         $handle = fopen('input/day2/' . $filename, 'r');
         if (!$handle) {
@@ -51,20 +51,41 @@ final class Day2Part2
         while (($line = fgets($handle)) !== false) {
             $roundDecisions = explode(' ', $line);
             $shapeDecision1 = $this->shapeNames[trim($roundDecisions[0])];
-            $shapeDecision2 = $this->getShapeDecisionForRoundOutcome(trim($roundDecisions[1]), $shapeDecision1);
+            $shapeDecision2 = $this->defineSecondDecision($shapeDecision1, trim($roundDecisions[1]), $decrypt);
             $score += $this->getRoundScores($shapeDecision1, $shapeDecision2);
         }
 
         return $score;
     }
 
-     private function getRoundScores(string $shape1, string $shape2): int
-     {
-         $shape2Score = $this->shapeScores[$shape2];
-         $outcomeScore = $this->getScoresOfOutcomeOfTheRound($shape1, $shape2);
+    private function defineSecondDecision(string $decision1, string $decision2, bool $decrypt): string
+    {
+        if ($decrypt) {
+            return $this->getShapeDecisionForRoundOutcome($decision2, $decision1);
+        }
+        return $this->shapeNames[$decision2];
+    }
 
-         return $shape2Score + $outcomeScore;
-     }
+    private function getShapeDecisionForRoundOutcome(string $outcome, string $shapeDecision1): string
+    {
+        if (self::OUTCOME_DRAW === $outcome) {
+            return $shapeDecision1;
+        }
+
+        if (self::OUTCOME_LOSS === $outcome) {
+            return $this->getShapeForDecision($this->loosingCombinations, $shapeDecision1);
+        }
+
+        return $this->getShapeForDecision($this->winningCombinations, $shapeDecision1);
+    }
+
+    private function getRoundScores(string $shape1, string $shape2): int
+    {
+        $shape2Score = $this->shapeScores[$shape2];
+        $outcomeScore = $this->getScoresOfOutcomeOfTheRound($shape1, $shape2);
+
+        return $shape2Score + $outcomeScore;
+    }
 
      private function getScoresOfOutcomeOfTheRound(string $shape1, string $shape2): int
      {
@@ -83,19 +104,6 @@ final class Day2Part2
         }
 
         return self::OUTCOME_LOSS;
-    }
-
-    private function getShapeDecisionForRoundOutcome(string $outcome, string $shapeDecision1): string
-    {
-        if (self::OUTCOME_DRAW === $outcome) {
-            return $shapeDecision1;
-        }
-
-        if (self::OUTCOME_LOSS === $outcome) {
-            return $this->getShapeForDecision($this->loosingCombinations, $shapeDecision1);
-        }
-
-        return $this->getShapeForDecision($this->winningCombinations, $shapeDecision1);
     }
 
     /**
