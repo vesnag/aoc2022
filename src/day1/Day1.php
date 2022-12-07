@@ -60,7 +60,6 @@ final class Day1
         $caloriesSum += $currentChunkSum;
         $maxCaloriesBucket[] = $currentChunkSum;
         sort($maxCaloriesBucket);
-
         $caloriesSum -= $maxCaloriesBucket[0];
         array_shift($maxCaloriesBucket);
 
