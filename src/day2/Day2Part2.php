@@ -4,14 +4,6 @@ namespace AOC2022\day2;
 
 final class Day2Part2
 {
-    private const SHAPE_ROCK = 'rock';
-    private const SHAPE_PAPER = 'paper';
-    private const SHAPE_SCISSORS = 'scissors';
-
-    private const OUTCOME_WIN = 'Z';
-    private const OUTCOME_DRAW = 'Y';
-    private const OUTCOME_LOSS = 'X';
-
     public function getTotalScore(string $filename): int
     {
         $handle = fopen('input/day2/' . $filename, 'r');
@@ -22,112 +14,87 @@ final class Day2Part2
         $score = 0;
         while (($line = fgets($handle)) !== false) {
             $roundDecisions = explode(' ', $line);
-            $shapeDecision1 = self::getShape(trim($roundDecisions[0]));
-            $roundDecisions2 = trim($roundDecisions[1]);
-            $shapeDecision2 = self::getShapeDecisionForRoundOutcome($roundDecisions2, $shapeDecision1);
-            $roundOutcome = $roundDecisions2;
-
-            $score += self::getRoundScores($shapeDecision2, $roundOutcome);
+            $decision1Score = self::getDecisionScore(trim($roundDecisions[0]));
+            $roundScore = self::getRoundScores(trim($roundDecisions[1]));
+            $decision2Score = self::getDecision2Score($roundScore, $decision1Score);
+            $score += $decision2Score + $roundScore;
         }
 
         return $score;
     }
 
-    private static function getShapeDecisionForRoundOutcome(string $outcome, string $shapeDecision1): string
+    private function getRoundScores(string $outcome): int
     {
-        if (self::OUTCOME_DRAW === $outcome) {
-            return $shapeDecision1;
-        }
-        if (self::OUTCOME_LOSS === $outcome) {
-            return self::getShapeToLoosRound($shapeDecision1);
-        }
-
-        return self::getShapeToWinRound($shapeDecision1);
-    }
-
-  /**
-   * @return string SHAPE_*
-   */
-    private static function getShapeToLoosRound(string $shapeDecision1): string
-    {
-        if (self::SHAPE_ROCK === $shapeDecision1) {
-            return self::SHAPE_SCISSORS;
-        }
-        if (self::SHAPE_PAPER === $shapeDecision1) {
-            return self::SHAPE_ROCK;
-        }
-        if (self::SHAPE_SCISSORS === $shapeDecision1) {
-            return self::SHAPE_PAPER;
-        }
-
-        return '';
-    }
-
-    /**
-     * @return string SHAPE_*
-     */
-    private static function getShapeToWinRound(string $shapeDecision1): string
-    {
-        if (self::SHAPE_ROCK === $shapeDecision1) {
-            return self::SHAPE_PAPER;
-        }
-        if (self::SHAPE_PAPER === $shapeDecision1) {
-            return self::SHAPE_SCISSORS;
-        }
-        if (self::SHAPE_SCISSORS === $shapeDecision1) {
-            return self::SHAPE_ROCK;
-        }
-
-        return '';
-    }
-
-    private static function getRoundScores(string $shape2, string $roundOutcome): int
-    {
-        $shape2Score = self::getShapeScore($shape2);
-        $outcomeScore = self::getOutcomeScores($roundOutcome);
-
-        return $shape2Score + $outcomeScore;
-    }
-
-    private static function getOutcomeScores(string $outcome): int
-    {
-        if (self::OUTCOME_WIN === $outcome) {
-            return 6;
-        }
-        if (self::OUTCOME_LOSS === $outcome) {
+        if ('X' === $outcome) {
             return 0;
         }
-
-        return 3;
-    }
-
-    private static function getShapeScore(string $shape): int
-    {
-        if (self::SHAPE_ROCK === $shape) {
-            return 1;
-        }
-        if (self::SHAPE_PAPER === $shape) {
-            return 2;
-        }
-        if (self::SHAPE_SCISSORS === $shape) {
+        if ('Y' === $outcome) {
             return 3;
+        }
+        if ('Z' === $outcome) {
+            return 6;
         }
 
         return 0;
     }
 
-    private static function getShape(string $shape): string
+    private function getDecision2Score(int $roundScore, int $decision1Score): int
     {
-        if ('A' === $shape || 'X' === $shape) {
-            return self::SHAPE_ROCK;
+        if (3 === $roundScore) {
+            return $decision1Score;
         }
-        if ('B' === $shape || 'Y' === $shape) {
-            return self::SHAPE_PAPER;
+        if (6 === $roundScore) {
+            return self::getDecisionToWin($decision1Score);
         }
-        if ('C' === $shape || 'Z' === $shape) {
-            return self::SHAPE_SCISSORS;
+        if (0 === $roundScore) {
+            return self::getDecisionToLose($decision1Score);
         }
 
-        return '';
+        return 0;
+    }
+
+    private static function getDecisionToWin(int $decision1Score): int
+    {
+        if (1 === $decision1Score) {
+            return 2;
+        }
+        if (2 === $decision1Score) {
+            return 3;
+        }
+        if (3 === $decision1Score) {
+            return 1;
+        }
+
+        return 0;
+    }
+
+    private static function getDecisionToLose(int $decision1Score): int
+    {
+        if (1 === $decision1Score) {
+            return 3;
+        }
+        if (2 === $decision1Score) {
+            return 1;
+        }
+        if (3 === $decision1Score) {
+            return 2;
+        }
+
+        return 0;
+    }
+
+    private static function getDecisionScore(string $decision): int
+    {
+        if ('A' === $decision) {
+            return 1;
+        }
+        if ('B' === $decision) {
+            return 2;
+        }
+        if ('C' === $decision) {
+            return 3;
+        }
+
+        return 0;
     }
 }
