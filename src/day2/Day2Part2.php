@@ -119,22 +119,13 @@ final class Day2Part2
 
     private static function getShape(string $shape): string
     {
-        if ('A' === $shape) {
+        if ('A' === $shape || 'X' === $shape) {
             return self::SHAPE_ROCK;
         }
-        if ('B' === $shape) {
+        if ('B' === $shape || 'Y' === $shape) {
             return self::SHAPE_PAPER;
         }
-        if ('C' === $shape) {
-            return self::SHAPE_SCISSORS;
-        }
-        if ('X' === $shape) {
-            return self::SHAPE_ROCK;
-        }
-        if ('Y' === $shape) {
-            return self::SHAPE_PAPER;
-        }
-        if ('Z' === $shape) {
+        if ('C' === $shape || 'Z' === $shape) {
             return self::SHAPE_SCISSORS;
         }
 
