@@ -22,34 +22,34 @@ final class Day2Part2
         $score = 0;
         while (($line = fgets($handle)) !== false) {
             $roundDecisions = explode(' ', $line);
-            $shapeDecision1 = $this->getShape(trim($roundDecisions[0]));
+            $shapeDecision1 = self::getShape(trim($roundDecisions[0]));
             $roundDecisions2 = trim($roundDecisions[1]);
-            $shapeDecision2 = $this->getShapeDecisionForRoundOutcome($roundDecisions2, $shapeDecision1);
+            $shapeDecision2 = self::getShapeDecisionForRoundOutcome($roundDecisions2, $shapeDecision1);
             $roundOutcome = $roundDecisions2;
 
-            $score += $this->getRoundScores($shapeDecision2, $roundOutcome);
+            $score += self::getRoundScores($shapeDecision2, $roundOutcome);
         }
 
         return $score;
     }
 
-    private function getShapeDecisionForRoundOutcome(string $outcome, string $shapeDecision1): string
+    private static function getShapeDecisionForRoundOutcome(string $outcome, string $shapeDecision1): string
     {
         if (self::OUTCOME_DRAW === $outcome) {
             return $shapeDecision1;
         }
 
         if (self::OUTCOME_LOSS === $outcome) {
-            return $this->getShapeToLoosRound($shapeDecision1);
+            return self::getShapeToLoosRound($shapeDecision1);
         }
 
-        return $this->getShapeToWinRound($shapeDecision1);
+        return self::getShapeToWinRound($shapeDecision1);
     }
 
   /**
    * @return string SHAPE_*
    */
-    private function getShapeToLoosRound(string $shapeDecision1): string
+    private static function getShapeToLoosRound(string $shapeDecision1): string
     {
         if (self::SHAPE_ROCK === $shapeDecision1) {
             return self::SHAPE_SCISSORS;
@@ -67,7 +67,7 @@ final class Day2Part2
     /**
      * @return string SHAPE_*
      */
-    private function getShapeToWinRound(string $shapeDecision1): string
+    private static function getShapeToWinRound(string $shapeDecision1): string
     {
         if (self::SHAPE_ROCK === $shapeDecision1) {
             return self::SHAPE_PAPER;
@@ -82,15 +82,15 @@ final class Day2Part2
         return '';
     }
 
-    private function getRoundScores(string $shape2, string $roundOutcome): int
+    private static function getRoundScores(string $shape2, string $roundOutcome): int
     {
-        $shape2Score = $this->getShapeScore($shape2);
-        $outcomeScore = $this->getOutcomeScores($roundOutcome);
+        $shape2Score = self::getShapeScore($shape2);
+        $outcomeScore = self::getOutcomeScores($roundOutcome);
 
         return $shape2Score + $outcomeScore;
     }
 
-    private function getOutcomeScores(string $outcome): int
+    private static function getOutcomeScores(string $outcome): int
     {
         if (self::OUTCOME_WIN === $outcome) {
             return 6;
@@ -102,7 +102,7 @@ final class Day2Part2
         return 3;
     }
 
-    private function getShapeScore(string $shape): int
+    private static function getShapeScore(string $shape): int
     {
         if (self::SHAPE_ROCK === $shape) {
             return 1;
@@ -117,7 +117,7 @@ final class Day2Part2
         return 0;
     }
 
-    private function getShape(string $shape): string
+    private static function getShape(string $shape): string
     {
         if ('A' === $shape) {
             return self::SHAPE_ROCK;
