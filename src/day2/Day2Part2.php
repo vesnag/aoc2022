@@ -38,7 +38,6 @@ final class Day2Part2
         if (self::OUTCOME_DRAW === $outcome) {
             return $shapeDecision1;
         }
-
         if (self::OUTCOME_LOSS === $outcome) {
             return self::getShapeToLoosRound($shapeDecision1);
         }
