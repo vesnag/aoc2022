@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 final class Day3Part1Test extends TestCase
 {
-    public function testMaxTotalCaloriesPart1(): void
+    public function testSumOfPriorities(): void
     {
 
       $this->assertEquals(
