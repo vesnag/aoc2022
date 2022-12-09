@@ -55,8 +55,14 @@ final class Day3Part2
     {
         $i = 0;
         $len = strlen($rucksackGroup[0]);
+        $used_chars = [];
         while ($i < $len) {
             $currentCharacter = mb_substr($rucksackGroup[0], $i, 1);
+            if (in_array($currentCharacter, $used_chars)) {
+              $i++;
+              continue;
+            }
+            $used_chars[$currentCharacter] = $currentCharacter;
             if (str_contains($rucksackGroup[1], $currentCharacter) && str_contains($rucksackGroup[2], $currentCharacter)) {
                 return self::getCharValue($currentCharacter);
             }
@@ -70,10 +76,10 @@ final class Day3Part2
     private static function getCharValue(string $char): int
     {
         $decimalValue = ord($char);
-        if ($decimalValue >= 65 &&  $decimalValue <= 90) {
+        if ($decimalValue >= 65 && $decimalValue <= 90) {
             return $decimalValue - 38;
         }
-        if ($decimalValue >= 97 &&  $decimalValue <= 122) {
+        if ($decimalValue >= 97 && $decimalValue <= 122) {
             return $decimalValue - 96;
         }
 
