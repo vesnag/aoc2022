@@ -13,28 +13,33 @@ final class Day3Part1
 
         $sum = 0;
         while (($line = fgets($handle)) !== false) {
-            $line = trim($line);
-            $size = strlen($line);
-
-            $firstRucksackIndex = 0;
-            $firstRucksackIndexMaxIndex = $size / 2;
-
-            while ($firstRucksackIndex <= $firstRucksackIndexMaxIndex) {
-                $currentCharacter = mb_substr($line, $firstRucksackIndex, 1);
-                $secondRucksackIndex = $size - 1;
-                while ($secondRucksackIndex >= $firstRucksackIndexMaxIndex) {
-                    $currentCharacterSecondRucksack = mb_substr($line, $secondRucksackIndex, 1);
-                    if ($currentCharacterSecondRucksack === $currentCharacter) {
-                        $sum += self::getCharValue($currentCharacter);
-                        break 2;
-                    }
-                    $secondRucksackIndex--;
-                }
-                $firstRucksackIndex++;
-            }
+            $sum += self::getCommonItemTypeValue(trim($line));
         }
 
         return $sum;
+    }
+
+    private static function getCommonItemTypeValue(string $line): int
+    {
+        $size = strlen($line);
+
+        $firstRucksackIndex = 0;
+        $firstRucksackIndexMaxIndex = $size / 2;
+
+        while ($firstRucksackIndex <= $firstRucksackIndexMaxIndex) {
+            $currentCharacter = mb_substr($line, $firstRucksackIndex, 1);
+            $secondRucksackIndex = $size - 1;
+            while ($secondRucksackIndex >= $firstRucksackIndexMaxIndex) {
+                $currentCharacterSecondRucksack = mb_substr($line, $secondRucksackIndex, 1);
+                if ($currentCharacterSecondRucksack === $currentCharacter) {
+                    return self::getCharValue($currentCharacter);
+                }
+                $secondRucksackIndex--;
+            }
+            $firstRucksackIndex++;
+        }
+
+        return 0;
     }
 
     private static function getCharValue(string $char): int
