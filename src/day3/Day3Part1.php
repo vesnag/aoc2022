@@ -16,16 +16,17 @@ final class Day3Part1
             $line = trim($line);
             $size = strlen($line);
 
-            $sameCharacterFound = false;
             $firstRucksackIndex = 0;
-            while ($firstRucksackIndex < (($size - 1) / 2) && (false === $sameCharacterFound)) {
+            $firstRucksackIndexMaxIndex = $size / 2;
+
+            while ($firstRucksackIndex <= $firstRucksackIndexMaxIndex) {
                 $currentCharacter = mb_substr($line, $firstRucksackIndex, 1);
                 $secondRucksackIndex = $size - 1;
-                while (($secondRucksackIndex >= ($size / 2)) && (false === $sameCharacterFound)) {
+                while ($secondRucksackIndex >= $firstRucksackIndexMaxIndex) {
                     $currentCharacterSecondRucksack = mb_substr($line, $secondRucksackIndex, 1);
                     if ($currentCharacterSecondRucksack === $currentCharacter) {
-                        $sameCharacterFound = true;
                         $sum += self::getCharValue($currentCharacter);
+                        break 2;
                     }
                     $secondRucksackIndex--;
                 }
