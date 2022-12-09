@@ -45,10 +45,10 @@ final class Day3Part1
     private static function getCharValue(string $char): int
     {
         $decimalValue = ord($char);
-        if ($decimalValue >= 65 &&  $decimalValue <= 90) {
+        if ($decimalValue >= 65 && $decimalValue <= 90) {
             return $decimalValue - 38;
         }
-        if ($decimalValue >= 97 &&  $decimalValue <= 122) {
+        if ($decimalValue >= 97 && $decimalValue <= 122) {
             return $decimalValue - 96;
         }
 
