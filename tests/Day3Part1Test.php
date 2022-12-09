@@ -9,16 +9,14 @@ final class Day3Part1Test extends TestCase
 {
     public function testSumOfPriorities(): void
     {
+        $this->assertEquals(
+            157,
+            Day3Part1::getSumOfPriorities('test-input.txt')
+        );
 
-      $this->assertEquals(
-        157,
-        Day3Part1::getSumOfPriorities('test-input.txt')
-      );
-
-      $this->assertEquals(
-        8349,
-        Day3Part1::getSumOfPriorities('input.txt')
-      );
-
+        $this->assertEquals(
+            8349,
+            Day3Part1::getSumOfPriorities('input.txt')
+        );
     }
 }
