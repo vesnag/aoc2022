@@ -76,9 +76,9 @@ final class Day2Part2
     private static function getDecisionScore(string $decision): int
     {
         return match ($decision) {
-            'A' => 1,
-            'B' => 2,
-            'C' => 3,
+            'A' => self::SHAPE_SCORE_ROCK,
+            'B' => self::SHAPE_SCORE_PAPER,
+            'C' => self::SHAPE_SCORE_SCISSORS,
             default => 0,
         };
     }
