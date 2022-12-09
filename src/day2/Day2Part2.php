@@ -4,6 +4,14 @@ namespace AOC2022\day2;
 
 final class Day2Part2
 {
+    private const OUTCOME_ROUND_SCORE_LOSE = 0;
+    private const OUTCOME_ROUND_SCORE_DRAW = 3;
+    private const OUTCOME_ROUND_SCORE_WIN = 6;
+
+    private const SHAPE_SCORE_ROCK = 1;
+    private const SHAPE_SCORE_PAPER = 2;
+    private const SHAPE_SCORE_SCISSORS = 3;
+
     public function getTotalScore(string $filename): int
     {
         $handle = fopen('input/day2/' . $filename, 'r');
@@ -12,11 +20,13 @@ final class Day2Part2
         }
 
         $score = 0;
+
         while (($line = fgets($handle)) !== false) {
             $roundDecisions = explode(' ', $line);
+
             $decision1Score = self::getDecisionScore(trim($roundDecisions[0]));
             $roundScore = self::getRoundScores(trim($roundDecisions[1]));
-            $decision2Score = self::getDecision2Score($roundScore, $decision1Score);
+            $decision2Score = self::getSecondDecisionScore($roundScore, $decision1Score);
             $score += $decision2Score + $roundScore;
         }
 
@@ -25,76 +35,51 @@ final class Day2Part2
 
     private function getRoundScores(string $outcome): int
     {
-        if ('X' === $outcome) {
-            return 0;
-        }
-        if ('Y' === $outcome) {
-            return 3;
-        }
-        if ('Z' === $outcome) {
-            return 6;
-        }
-
-        return 0;
+        return match ($outcome) {
+            'X' => self::OUTCOME_ROUND_SCORE_LOSE,
+            'Y' => self::OUTCOME_ROUND_SCORE_DRAW,
+            'Z' => self::OUTCOME_ROUND_SCORE_WIN,
+            default => 0,
+        };
     }
 
-    private function getDecision2Score(int $roundScore, int $decision1Score): int
+    private function getSecondDecisionScore(int $roundScore, int $decision1Score): int
     {
-        if (3 === $roundScore) {
-            return $decision1Score;
-        }
-        if (6 === $roundScore) {
-            return self::getDecisionToWin($decision1Score);
-        }
-        if (0 === $roundScore) {
-            return self::getDecisionToLose($decision1Score);
-        }
-
-        return 0;
+        return match ($roundScore) {
+            self::OUTCOME_ROUND_SCORE_DRAW => $decision1Score,
+            self::OUTCOME_ROUND_SCORE_WIN => self::getDecisionScoreToWin($decision1Score),
+            self::OUTCOME_ROUND_SCORE_LOSE => self::getDecisionScoreToLose($decision1Score),
+            default => 0,
+        };
     }
 
-    private static function getDecisionToWin(int $decision1Score): int
+    private static function getDecisionScoreToWin(int $decision1Score): int
     {
-        if (1 === $decision1Score) {
-            return 2;
-        }
-        if (2 === $decision1Score) {
-            return 3;
-        }
-        if (3 === $decision1Score) {
-            return 1;
-        }
-
-        return 0;
+        return match ($decision1Score) {
+            self::SHAPE_SCORE_ROCK => self::SHAPE_SCORE_PAPER,
+            self::SHAPE_SCORE_PAPER => self::SHAPE_SCORE_SCISSORS,
+            self::SHAPE_SCORE_SCISSORS => self::SHAPE_SCORE_ROCK,
+            default => 0,
+        };
     }
 
-    private static function getDecisionToLose(int $decision1Score): int
+    private static function getDecisionScoreToLose(int $decision1Score): int
     {
-        if (1 === $decision1Score) {
-            return 3;
-        }
-        if (2 === $decision1Score) {
-            return 1;
-        }
-        if (3 === $decision1Score) {
-            return 2;
-        }
-
-        return 0;
+        return match ($decision1Score) {
+            self::SHAPE_SCORE_ROCK => self::SHAPE_SCORE_SCISSORS,
+            self::SHAPE_SCORE_PAPER => self::SHAPE_SCORE_ROCK,
+            self::SHAPE_SCORE_SCISSORS => self::SHAPE_SCORE_PAPER,
+            default => 0,
+        };
     }
 
     private static function getDecisionScore(string $decision): int
     {
-        if ('A' === $decision) {
-            return 1;
-        }
-        if ('B' === $decision) {
-            return 2;
-        }
-        if ('C' === $decision) {
-            return 3;
-        }
-
-        return 0;
+        return match ($decision) {
+            'A' => 1,
+            'B' => 2,
+            'C' => 3,
+            default => 0,
+        };
     }
 }

@@ -52,31 +52,21 @@ final class Day2Part1
 
     private static function getShapeScore(string $shape): int
     {
-        if (self::SHAPE_ROCK === $shape) {
-            return 1;
-        }
-        if (self::SHAPE_PAPER === $shape) {
-            return 2;
-        }
-        if (self::SHAPE_SCISSORS === $shape) {
-            return 3;
-        }
-
-        return 0;
+        return match ($shape) {
+            self::SHAPE_ROCK => 1,
+            self::SHAPE_PAPER => 2,
+            self::SHAPE_SCISSORS => 3,
+            default => 0,
+        };
     }
 
     private static function getShape(string $shape): string
     {
-        if ('A' === $shape || 'X' === $shape) {
-            return self::SHAPE_ROCK;
-        }
-        if ('B' === $shape || 'Y' === $shape) {
-            return self::SHAPE_PAPER;
-        }
-        if ('C' === $shape || 'Z' === $shape) {
-            return self::SHAPE_SCISSORS;
-        }
-
-        return '';
+        return match ($shape) {
+            'A', 'X' => self::SHAPE_ROCK,
+            'B', 'Y' => self::SHAPE_PAPER,
+            'C', 'Z' => self::SHAPE_SCISSORS,
+            default => '',
+        };
     }
 }
