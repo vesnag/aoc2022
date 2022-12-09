@@ -15,7 +15,7 @@ final class Day3Part2Test extends TestCase
         );
 
         $this->assertEquals(
-            8349,
+          2681,
             Day3Part2::getSumOfGroupBadges('input.txt', 3)
         );
     }
