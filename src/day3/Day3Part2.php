@@ -59,8 +59,8 @@ final class Day3Part2
         while ($i < $len) {
             $currentCharacter = mb_substr($rucksackGroup[0], $i, 1);
             if (in_array($currentCharacter, $used_chars)) {
-              $i++;
-              continue;
+                $i++;
+                continue;
             }
             $used_chars[$currentCharacter] = $currentCharacter;
             if (str_contains($rucksackGroup[1], $currentCharacter) && str_contains($rucksackGroup[2], $currentCharacter)) {

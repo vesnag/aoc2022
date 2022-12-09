@@ -65,5 +65,4 @@ final class Day1
 
         return $caloriesSum;
     }
-
 }
