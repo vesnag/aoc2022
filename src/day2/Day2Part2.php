@@ -23,7 +23,6 @@ final class Day2Part2
 
         while (($line = fgets($handle)) !== false) {
             $roundDecisions = explode(' ', $line);
-
             $decision1Score = self::getDecisionScore(trim($roundDecisions[0]));
             $roundScore = self::getRoundScores(trim($roundDecisions[1]));
             $decision2Score = self::getSecondDecisionScore($roundScore, $decision1Score);
@@ -33,44 +32,28 @@ final class Day2Part2
         return $score;
     }
 
-    private function getRoundScores(string $outcome): int
-    {
-        return match ($outcome) {
-            'X' => self::OUTCOME_ROUND_SCORE_LOSE,
-            'Y' => self::OUTCOME_ROUND_SCORE_DRAW,
-            'Z' => self::OUTCOME_ROUND_SCORE_WIN,
-            default => 0,
-        };
-    }
-
     private function getSecondDecisionScore(int $roundScore, int $decision1Score): int
     {
-        return match ($roundScore) {
-            self::OUTCOME_ROUND_SCORE_DRAW => $decision1Score,
-            self::OUTCOME_ROUND_SCORE_WIN => self::getDecisionScoreToWin($decision1Score),
-            self::OUTCOME_ROUND_SCORE_LOSE => self::getDecisionScoreToLose($decision1Score),
+        if (self::OUTCOME_ROUND_SCORE_DRAW === $roundScore) {
+            return $decision1Score;
+        }
+
+        return self::returnValueInRange(match ($roundScore) {
+            self::OUTCOME_ROUND_SCORE_WIN => $decision1Score + 1,
+            self::OUTCOME_ROUND_SCORE_LOSE => $decision1Score - 1,
             default => 0,
-        };
+        }, self::SHAPE_SCORE_SCISSORS);
     }
 
-    private static function getDecisionScoreToWin(int $decision1Score): int
+    private static function returnValueInRange(int $value, int $maxValue): int
     {
-        return match ($decision1Score) {
-            self::SHAPE_SCORE_ROCK => self::SHAPE_SCORE_PAPER,
-            self::SHAPE_SCORE_PAPER => self::SHAPE_SCORE_SCISSORS,
-            self::SHAPE_SCORE_SCISSORS => self::SHAPE_SCORE_ROCK,
-            default => 0,
-        };
-    }
-
-    private static function getDecisionScoreToLose(int $decision1Score): int
-    {
-        return match ($decision1Score) {
-            self::SHAPE_SCORE_ROCK => self::SHAPE_SCORE_SCISSORS,
-            self::SHAPE_SCORE_PAPER => self::SHAPE_SCORE_ROCK,
-            self::SHAPE_SCORE_SCISSORS => self::SHAPE_SCORE_PAPER,
-            default => 0,
-        };
+        if ($value <= 0) {
+            return $value + $maxValue;
+        }
+        if ($value > $maxValue) {
+            return $value - $maxValue;
+        }
+        return $value;
     }
 
     private static function getDecisionScore(string $decision): int
@@ -79,6 +62,16 @@ final class Day2Part2
             'A' => self::SHAPE_SCORE_ROCK,
             'B' => self::SHAPE_SCORE_PAPER,
             'C' => self::SHAPE_SCORE_SCISSORS,
+            default => 0,
+        };
+    }
+
+    private function getRoundScores(string $outcome): int
+    {
+        return match ($outcome) {
+            'X' => self::OUTCOME_ROUND_SCORE_LOSE,
+            'Y' => self::OUTCOME_ROUND_SCORE_DRAW,
+            'Z' => self::OUTCOME_ROUND_SCORE_WIN,
             default => 0,
         };
     }
