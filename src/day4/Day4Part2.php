@@ -24,9 +24,11 @@ final class Day4Part2
                 continue;
             }
 
-            if ($firstSection[1] >= $secondSection[0]) {
-                $count++;
+            if ($firstSection[1] < $secondSection[0]) {
+                continue;
             }
+
+            $count++;
         }
 
         return $count;

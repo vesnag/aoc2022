@@ -21,22 +21,32 @@ final class Day4Part1
             $len2 = (int) $secondSection[1] - (int) $secondSection[0];
 
             if ($len1 === $len2) {
-                if ($firstSection[0] == $secondSection[0]) {
+                if ($firstSection[0] === $secondSection[0]) {
                     $count++;
                 }
                 continue;
             }
 
             if ($len1 < $len2) {
-                if (($firstSection[0] >= $secondSection[0]) && ($firstSection[1] <= $secondSection[1])) {
-                    $count++;
+                if ($firstSection[0] < $secondSection[0]) {
+                    continue;
                 }
+                if ($firstSection[1] > $secondSection[1]) {
+                    continue;
+                }
+                $count++;
                 continue;
             }
 
-            if (($firstSection[0] <= $secondSection[0]) && ($firstSection[1] >= $secondSection[1])) {
-                $count++;
+            if ($firstSection[0] > $secondSection[0]) {
+                continue;
             }
+
+            if ($firstSection[1] < $secondSection[1]) {
+                continue;
+            }
+
+            $count++;
         }
 
         return $count;
