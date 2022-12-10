@@ -14,6 +14,7 @@ final class Day5Part1
         $skipLine = false;
         $stackFilled = false;
         $stack = [];
+        $stackTopCrates = [];
         while (($line = fgets($handle)) !== false) {
             if ($skipLine) {
                 $skipLine = false;
@@ -31,10 +32,16 @@ final class Day5Part1
                 for ($i = 0; $i < $numberOfMoves; $i++) {
                     $fromIndex = $from - 1;
                     $toIndex = $to - 1;
-                    $el = $stack[$fromIndex][0];
+                    $crate = $stack[$fromIndex][0];
 
                     array_shift($stack[$fromIndex]);
-                    $stack[$toIndex] = [$el, ...$stack[$toIndex]];
+                    $stack[$toIndex] = [$crate, ...$stack[$toIndex]];
+
+                    if ($i === $numberOfMoves - 1) {
+                        $stackTopCrates[$toIndex] = $crate;
+                        $topCrateOfStackFrom = $stack[$fromIndex][0] ?? '';
+                        $stackTopCrates[$fromIndex] = $topCrateOfStackFrom;
+                    }
                 }
                 continue;
             }
@@ -54,6 +61,10 @@ final class Day5Part1
 
                 if (ord($crate) !== 32) {
                     $stack[$stackIndex][] = $crate;
+
+                    if (empty($stackTopCrates[$stackIndex])) {
+                        $stackTopCrates[$stackIndex] = $crate;
+                    }
                 }
 
                 $stackIndex++;
@@ -61,21 +72,8 @@ final class Day5Part1
             }
         }
 
-        return self::getTopElementsString($stack);
-    }
+        ksort($stackTopCrates, SORT_NUMERIC);
 
-
-  /**
-   * @param array<int, array<int, string>> $array
-   */
-    private static function getTopElementsString(array $array): string
-    {
-        $topElements = '';
-        ksort($array, SORT_NUMERIC);
-        foreach ($array as $item) {
-            $topElements .= $item[0];
-        }
-
-        return $topElements;
+        return implode($stackTopCrates);
     }
 }
