@@ -27,10 +27,10 @@ final class Day3Part1
         $firstRucksackIndexMaxIndex = $size / 2;
 
         while ($firstRucksackIndex <= $firstRucksackIndexMaxIndex) {
-            $currentCharacter = mb_substr($line, $firstRucksackIndex, 1);
+            $currentCharacter = $line[$firstRucksackIndex];
             $secondRucksackIndex = $size - 1;
             while ($secondRucksackIndex >= $firstRucksackIndexMaxIndex) {
-                $currentCharacterSecondRucksack = mb_substr($line, $secondRucksackIndex, 1);
+                $currentCharacterSecondRucksack = $line[$secondRucksackIndex];
                 if ($currentCharacterSecondRucksack === $currentCharacter) {
                     return self::getCharValue($currentCharacter);
                 }

@@ -57,7 +57,7 @@ final class Day3Part2
         $len = strlen($rucksackGroup[0]);
         $used_chars = [];
         while ($i < $len) {
-            $currentCharacter = mb_substr($rucksackGroup[0], $i, 1);
+            $currentCharacter = $rucksackGroup[0][$i];
             if (in_array($currentCharacter, $used_chars)) {
                 $i++;
                 continue;
