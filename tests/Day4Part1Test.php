@@ -15,7 +15,7 @@ final class Day4Part1Test extends TestCase
         );
 
         $this->assertEquals(
-          540,
+            540,
             Day4Part1::countOverlappedAssignments('input.txt')
         );
     }
