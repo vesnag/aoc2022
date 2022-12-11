@@ -46,29 +46,9 @@ final class Day5Part1
                 continue;
             }
 
-            $strlen = strlen($line);
-            $i = 1;
-            $stackIndex = 0;
-
-            while ($i < $strlen) {
-                $crate = $line[$i];
-
-                if (is_numeric($crate)) {
-                    $stackFilled = true;
-                    $skipLine = true;
-                    break;
-                }
-
-                if (ord($crate) !== 32) {
-                    $stack[$stackIndex][] = $crate;
-
-                    if (empty($stackTopCrates[$stackIndex])) {
-                        $stackTopCrates[$stackIndex] = $crate;
-                    }
-                }
-
-                $stackIndex++;
-                $i = $i + 4;
+            $stackFilled = self::fillStack($line, $stack);
+            if ($stackFilled) {
+                $skipLine = true;
             }
         }
 
@@ -76,4 +56,36 @@ final class Day5Part1
 
         return implode($stackTopCrates);
     }
+
+    /**
+     * @param array<int, array<int, string>> $stack
+     */
+  private static function fillStack(string $line, array &$stack): bool
+  {
+      $stackIndex = 0;
+      for ($i = 1; isset($line[$i]); $i = $i+4) {
+          $crate = $line[$i];
+          if ($crate === PHP_EOL) {
+              return false;
+          }
+          if (is_numeric($crate)) {
+              return true;
+          }
+
+          if (ord($crate) === 32) {
+              $stackIndex++;
+              continue;
+          }
+
+          $stack[$stackIndex][] = $crate;
+
+          if (empty($stackTopCrates[$stackIndex])) {
+              $stackTopCrates[$stackIndex] = $crate;
+          }
+
+          $stackIndex++;
+      }
+
+      return false;
+  }
 }
