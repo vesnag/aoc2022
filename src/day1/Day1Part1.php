@@ -17,26 +17,20 @@ final class Day1Part1
         while (($line = fgets($handle)) !== false) {
             if (is_numeric($line)) {
                 $currentChunkSum += (int) $line;
-                continue;
+
+                if (!feof($handle)) {
+                    continue;
+                }
             }
 
-            $maxSum = self::returnMaxSum($currentChunkSum, $maxSum);
-
+            if ($currentChunkSum > $maxSum) {
+                $maxSum = $currentChunkSum;
+            }
             $currentChunkSum = 0;
         }
 
-        $maxSum = self::returnMaxSum($currentChunkSum, $maxSum);
-
         fclose($handle);
 
-        return $maxSum;
-    }
-
-    private static function returnMaxSum(int $currentSum, int $maxSum): int
-    {
-        if ($currentSum > $maxSum) {
-            return $currentSum;
-        }
         return $maxSum;
     }
 }
