@@ -22,27 +22,7 @@ final class Day5Part1
             }
 
             if (true === $stackFilled) {
-                $matches = [];
-                preg_match_all('/\d+/', $line, $matches);
-                $numbers = $matches[0];
-                $numberOfMoves = $numbers[0];
-                $from = $numbers[1];
-                $to = $numbers[2];
-
-                for ($i = 0; $i < $numberOfMoves; $i++) {
-                    $fromIndex = $from - 1;
-                    $toIndex = $to - 1;
-                    $crate = $stack[$fromIndex][0];
-
-                    array_shift($stack[$fromIndex]);
-                    $stack[$toIndex] = [$crate, ...$stack[$toIndex]];
-
-                    if ($i === $numberOfMoves - 1) {
-                        $stackTopCrates[$toIndex] = $crate;
-                        $topCrateOfStackFrom = $stack[$fromIndex][0] ?? '';
-                        $stackTopCrates[$fromIndex] = $topCrateOfStackFrom;
-                    }
-                }
+                self::rearrangeStackAndGetTopCrates($line, $stack, $stackTopCrates);
                 continue;
             }
 
@@ -59,33 +39,72 @@ final class Day5Part1
 
     /**
      * @param array<int, array<int, string>> $stack
+     * @param array<int, mixed> $stackTopCrates
      */
-  private static function fillStack(string $line, array &$stack): bool
-  {
-      $stackIndex = 0;
-      for ($i = 1; isset($line[$i]); $i = $i+4) {
-          $crate = $line[$i];
-          if ($crate === PHP_EOL) {
-              return false;
-          }
-          if (is_numeric($crate)) {
-              return true;
-          }
+    private static function rearrangeStackAndGetTopCrates(string $line, array &$stack, array &$stackTopCrates): void
+    {
+        $numbers = self::getNumbersFromString($line);
 
-          if (ord($crate) === 32) {
-              $stackIndex++;
-              continue;
-          }
+        $numberOfMoves = $numbers[0];
+        $from = $numbers[1];
+        $to = $numbers[2];
 
-          $stack[$stackIndex][] = $crate;
+        for ($i = 0; $i < $numberOfMoves; $i++) {
+            $fromIndex = $from - 1;
+            $toIndex = $to - 1;
+            $crate = $stack[$fromIndex][0];
 
-          if (empty($stackTopCrates[$stackIndex])) {
-              $stackTopCrates[$stackIndex] = $crate;
-          }
+            array_shift($stack[$fromIndex]);
+            $stack[$toIndex] = [$crate, ...$stack[$toIndex]];
 
-          $stackIndex++;
-      }
+            if ($numberOfMoves - 1 === $i) {
+                $stackTopCrates[$toIndex] = $crate;
+                $topCrateOfStackFrom = $stack[$fromIndex][0] ?? '';
+                $stackTopCrates[$fromIndex] = $topCrateOfStackFrom;
+            }
+        }
+    }
 
-      return false;
-  }
+    /**
+     * @param array<int, array<int, string>> $stack
+     */
+    private static function fillStack(string $line, array &$stack): bool
+    {
+        $stackIndex = 0;
+        for ($i = 1; isset($line[$i]); $i = $i+4) {
+            $crate = $line[$i];
+            if ($crate === PHP_EOL) {
+                return false;
+            }
+            if (is_numeric($crate)) {
+                return true;
+            }
+
+            if (ord($crate) === 32) {
+                $stackIndex++;
+                continue;
+            }
+
+            $stack[$stackIndex][] = $crate;
+
+            if (empty($stackTopCrates[$stackIndex])) {
+                $stackTopCrates[$stackIndex] = $crate;
+            }
+
+            $stackIndex++;
+        }
+
+        return false;
+    }
+
+    /**
+    * @return array<int, int>
+    */
+    private static function getNumbersFromString(string $string): array
+    {
+        $matches = [];
+        preg_match_all('/\d+/', $string, $matches);
+
+        return $matches[0];
+    }
 }
