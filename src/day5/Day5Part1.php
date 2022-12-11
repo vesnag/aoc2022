@@ -59,8 +59,7 @@ final class Day5Part1
 
             if ($numberOfMoves - 1 === $i) {
                 $stackTopCrates[$toIndex] = $crate;
-                $topCrateOfStackFrom = $stack[$fromIndex][0] ?? '';
-                $stackTopCrates[$fromIndex] = $topCrateOfStackFrom;
+                $stackTopCrates[$fromIndex] = $stack[$fromIndex][0] ?? '';
             }
         }
     }
