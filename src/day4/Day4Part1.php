@@ -17,38 +17,43 @@ final class Day4Part1
             $firstSection = explode('-', $sections[0]);
             $secondSection = explode('-', $sections[1]);
 
-            $len1 = (int) $firstSection[1] - (int) $firstSection[0];
-            $len2 = (int) $secondSection[1] - (int) $secondSection[0];
-
-            if ($len1 === $len2) {
-                if ($firstSection[0] === $secondSection[0]) {
-                    $count++;
-                }
-                continue;
-            }
-
-            if ($len1 < $len2) {
-                if ($firstSection[0] < $secondSection[0]) {
-                    continue;
-                }
-                if ($firstSection[1] > $secondSection[1]) {
-                    continue;
-                }
+            if (self::isFullyOverlap($firstSection, $secondSection)) {
                 $count++;
-                continue;
             }
-
-            if ($firstSection[0] > $secondSection[0]) {
-                continue;
-            }
-
-            if ($firstSection[1] < $secondSection[1]) {
-                continue;
-            }
-
-            $count++;
         }
 
         return $count;
     }
+
+  /**
+   * @param array<int,string> $firstSection
+   * @param array<int,string> $secondSection
+   */
+  private static function isFullyOverlap(array $firstSection, array $secondSection): bool
+  {
+      $len1 = (int) $firstSection[1] - (int) $firstSection[0];
+      $len2 = (int) $secondSection[1] - (int) $secondSection[0];
+
+      if ($len1 === $len2) {
+          if ($firstSection[0] !== $secondSection[0]) {
+              return false;
+          }
+
+          return true;
+      }
+
+      if ($len1 < $len2) {
+          if (($firstSection[0] < $secondSection[0]) || ($firstSection[1] > $secondSection[1])) {
+              return false;
+          }
+
+          return true;
+      }
+
+      if (($firstSection[0] > $secondSection[0]) || ($firstSection[1] < $secondSection[1])) {
+          return false;
+      }
+
+      return true;
+  }
 }
