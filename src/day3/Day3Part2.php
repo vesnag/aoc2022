@@ -31,6 +31,7 @@ final class Day3Part2
                 $minRucksackSize = strlen($line);
                 $rucksackGroup[] = $line;
                 $i++;
+
                 continue;
             }
 
@@ -38,9 +39,10 @@ final class Day3Part2
             if ($rucksackSize < $minRucksackSize) {
                 array_unshift($rucksackGroup, $line);
                 $minRucksackSize = $rucksackSize;
-            } else {
-                $rucksackGroup[] = $line;
             }
+
+            $rucksackGroup[] = $line;
+
             $i++;
         }
         $sum += self::getSumOfGroupBadge($rucksackGroup);
