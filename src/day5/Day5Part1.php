@@ -44,10 +44,7 @@ final class Day5Part1
     private static function rearrangeStackAndGetTopCrates(string $line, array &$stack, array &$stackTopCrates): void
     {
         $numbers = self::getNumbersFromString($line);
-
-        $numberOfMoves = $numbers[0];
-        $from = $numbers[1];
-        $to = $numbers[2];
+        list($numberOfMoves, $from, $to) = $numbers;
 
         for ($i = 0; $i < $numberOfMoves; $i++) {
             $fromIndex = $from - 1;

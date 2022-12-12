@@ -34,7 +34,7 @@ final class Day5Part2
 
         ksort($stackTopCrates, SORT_NUMERIC);
 
-        return implode($stackTopCrates);
+        return implode('', $stackTopCrates);
     }
 
     /**
@@ -44,10 +44,7 @@ final class Day5Part2
     private static function rearrangeStackAndGetTopCrates(string $line, array &$stack, array &$stackTopCrates): void
     {
         $numbers = self::getNumbersFromString($line);
-
-        $numberOfMoves = $numbers[0];
-        $from = $numbers[1];
-        $to = $numbers[2];
+        list($numberOfMoves, $from, $to) = $numbers;
 
         $fromIndex = $from - 1;
         $toIndex = $to - 1;
@@ -100,7 +97,6 @@ final class Day5Part2
     */
     private static function getNumbersFromString(string $string): array
     {
-        $matches = [];
         preg_match_all('/\d+/', $string, $matches);
 
         return $matches[0];
