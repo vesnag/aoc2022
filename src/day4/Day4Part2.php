@@ -31,17 +31,6 @@ final class Day4Part2
    */
   private static function isOverlap(array $firstSection, array $secondSection): bool
   {
-      if ($secondSection[1] < $firstSection[0]) {
-          if ($secondSection[0] > $firstSection[1]) {
-              return true;
-          }
-          return false;
-      }
-
-      if ($firstSection[1] < $secondSection[0]) {
-          return false;
-      }
-
-      return true;
+      return !($secondSection[1] < $firstSection[0] || $secondSection[0] > $firstSection[1]);
   }
 }
