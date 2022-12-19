@@ -27,12 +27,12 @@ final class Day5Part2
 
             $stackFilled = self::fillStack($line, $stack);
             if ($stackFilled) {
-              $skipLine = true;
+                $skipLine = true;
             }
         }
 
         ksort($stack);
-        return implode('', array_map(fn($el) => $el[0], $stack));
+        return implode('', array_map(fn ($el) => $el[0], $stack));
     }
 
     /**
@@ -90,5 +90,4 @@ final class Day5Part2
 
         return $matches[0];
     }
-
 }
