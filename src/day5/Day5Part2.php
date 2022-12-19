@@ -14,7 +14,6 @@ final class Day5Part2
         $skipLine = false;
         $stackFilled = false;
         $stack = [];
-        $stackTopCrates = [];
         while (($line = fgets($handle)) !== false) {
             if ($skipLine) {
                 $skipLine = false;
@@ -22,42 +21,32 @@ final class Day5Part2
             }
 
             if (true === $stackFilled) {
-                self::rearrangeStackAndGetTopCrates($line, $stack, $stackTopCrates);
+                self::rearrangeStackAndGetTopCrates($line, $stack);
                 continue;
             }
 
             $stackFilled = self::fillStack($line, $stack);
             if ($stackFilled) {
-                $skipLine = true;
+              $skipLine = true;
             }
         }
 
-        ksort($stackTopCrates, SORT_NUMERIC);
-
-        return implode('', $stackTopCrates);
+        ksort($stack);
+        return implode('', array_map(fn($el) => $el[0], $stack));
     }
 
     /**
      * @param array<int, array<int, string>> $stack
-     * @param array<int, mixed> $stackTopCrates
      */
-    private static function rearrangeStackAndGetTopCrates(string $line, array &$stack, array &$stackTopCrates): void
+    private static function rearrangeStackAndGetTopCrates(string $line, array &$stack): void
     {
         $numbers = self::getNumbersFromString($line);
         list($numberOfMoves, $from, $to) = $numbers;
-
-        $fromIndex = $from - 1;
-        $toIndex = $to - 1;
-        $cratesToMove = array_slice($stack[$fromIndex], 0, $numberOfMoves);
-
-        $stack[$toIndex] = array_merge($cratesToMove, $stack[$toIndex]);
-
-        $stackFromIndex = $stack[$fromIndex];
-        array_splice($stackFromIndex, 0, $numberOfMoves);
-        $stack[$fromIndex] = $stackFromIndex;
-
-        $stackTopCrates[$toIndex] = $cratesToMove[0];
-        $stackTopCrates[$fromIndex] = $stack[$fromIndex][0] ?? '';
+        $from--;
+        $to--;
+        $cratesToMove = array_slice($stack[$from], 0, $numberOfMoves);
+        $stack[$to] = array_merge($cratesToMove, $stack[$to]);
+        array_splice($stack[$from], 0, $numberOfMoves);
     }
 
     /**
@@ -101,4 +90,5 @@ final class Day5Part2
 
         return $matches[0];
     }
+
 }
