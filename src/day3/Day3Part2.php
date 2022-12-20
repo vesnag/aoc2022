@@ -11,41 +11,26 @@ final class Day3Part2
             return 0;
         }
 
-        $rucksackGroup = [];
         $sum = 0;
+        $rucksackGroup = [];
         $i = 0;
 
-        $minRucksackSize = 0;
         while (($line = fgets($handle)) !== false) {
             $line = trim($line);
 
-            if ($i == $numberOfRucksack) {
-                $sum += self::getSumOfGroupBadge($rucksackGroup);
+            $rucksackGroup[] = $line;
+            $i++;
 
-                $minRucksackSize = 0;
+            if ($i === $numberOfRucksack) {
+                $sum += self::getSumOfGroupBadge($rucksackGroup);
                 $rucksackGroup = [];
                 $i = 0;
             }
-
-            if (0 === $i) {
-                $minRucksackSize = strlen($line);
-                $rucksackGroup[] = $line;
-                $i++;
-
-                continue;
-            }
-
-            $rucksackSize = strlen($line);
-            if ($rucksackSize < $minRucksackSize) {
-                array_unshift($rucksackGroup, $line);
-                $minRucksackSize = $rucksackSize;
-            }
-
-            $rucksackGroup[] = $line;
-
-            $i++;
         }
-        $sum += self::getSumOfGroupBadge($rucksackGroup);
+
+        if (!empty($rucksackGroup)) {
+            $sum += self::getSumOfGroupBadge($rucksackGroup);
+        }
 
         return $sum;
     }
