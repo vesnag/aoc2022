@@ -34,26 +34,20 @@ final class Day4Part1
       $len1 = (int) $firstSection[1] - (int) $firstSection[0];
       $len2 = (int) $secondSection[1] - (int) $secondSection[0];
 
-      if ($len1 === $len2) {
-          if ($firstSection[0] !== $secondSection[0]) {
-              return false;
-          }
-
+      if ($len1 === $len2 && $firstSection[0] === $secondSection[0]) {
           return true;
       }
 
-      if ($len1 < $len2) {
-          if (($firstSection[0] < $secondSection[0]) || ($firstSection[1] > $secondSection[1])) {
-              return false;
-          }
-
+      // Check if the first section is fully contained within the second section.
+      if ($firstSection[0] >= $secondSection[0] && $firstSection[1] <= $secondSection[1]) {
           return true;
       }
 
-      if (($firstSection[0] > $secondSection[0]) || ($firstSection[1] < $secondSection[1])) {
-          return false;
+      // Check if the second section is fully contained within the first section.
+      if ($secondSection[0] >= $firstSection[0] && $secondSection[1] <= $firstSection[1]) {
+          return true;
       }
 
-      return true;
+      return false;
   }
 }
