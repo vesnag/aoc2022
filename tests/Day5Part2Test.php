@@ -11,12 +11,12 @@ final class Day5Part2Test extends TestCase
     {
         $this->assertEquals(
             'MCD',
-            Day5Part2::findTopCrate('test-input.txt')
+            (new Day5Part2)->findTopCratesAfterRearrangement('test-input.txt')
         );
 
         $this->assertEquals(
             'GSLCMFBRP',
-            Day5Part2::findTopCrate('input.txt')
+            (new Day5Part2)->findTopCratesAfterRearrangement('input.txt')
         );
     }
 }

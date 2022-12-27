@@ -4,7 +4,7 @@ namespace AOC2022\day5;
 
 final class Day5Part2
 {
-    public static function findTopCrate(string $filename): string
+    public function findTopCratesAfterRearrangement(string $filename): string
     {
         $inputFileHandle = fopen('input/day5/' . $filename, 'r');
         if (!$inputFileHandle) {
@@ -12,21 +12,22 @@ final class Day5Part2
         }
 
         $skipLine = false;
-        $stackFilled = false;
         $stack = [];
+        $mode = 'filling';
         while (($line = fgets($inputFileHandle)) !== false) {
-            if ($skipLine) {
+            if (true === $skipLine) {
                 $skipLine = false;
                 continue;
             }
 
-            if (true === $stackFilled) {
-                self::rearrangeStackAndGetTopCrates($line, $stack);
+            if ('rearranging' === $mode) {
+                $this->rearrangeStackAndGetTopCrates($line, $stack);
                 continue;
             }
 
-            $stackFilled = self::fillStack($line, $stack);
-            if ($stackFilled) {
+            $isStackFilled = $this->fillStack($line, $stack);
+            if (true == $isStackFilled) {
+                $mode = 'rearranging';
                 $skipLine = true;
             }
         }
@@ -40,9 +41,9 @@ final class Day5Part2
     /**
      * @param array<int, array<int, string>> $stack
      */
-    private static function rearrangeStackAndGetTopCrates(string $line, array &$stack): void
+    private function rearrangeStackAndGetTopCrates(string $line, array &$stack): void
     {
-        $numbers = self::getNumbersFromString($line);
+        $numbers = $this->getNumbersFromString($line);
         list($numberOfMoves, $from, $to) = $numbers;
         $from--;
         $to--;
@@ -54,7 +55,7 @@ final class Day5Part2
     /**
      * @param array<int, array<int, string>> $stack
      */
-    private static function fillStack(string $line, array &$stack): bool
+    private function fillStack(string $line, array &$stack): bool
     {
         $stackIndex = 0;
         for ($i = 1; isset($line[$i]); $i = $i+4) {
@@ -86,7 +87,7 @@ final class Day5Part2
     /**
     * @return array<int, int>
     */
-    private static function getNumbersFromString(string $string): array
+    private function getNumbersFromString(string $string): array
     {
         preg_match_all('/\d+/', $string, $matches);
 
