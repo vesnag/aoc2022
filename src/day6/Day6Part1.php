@@ -4,33 +4,39 @@ namespace AOC2022\day6;
 
 final class Day6Part1
 {
-    public static function findPositionOfMarker(string $filename): int
+    public function findPositionOfPacketMarker(string $filename): int
     {
-        $file = fopen('input/day6/' . $filename, 'r');
-        if (!$file) {
+        $inputFileHandle = fopen('input/day6/' . $filename, 'r');
+        if (!$inputFileHandle) {
             return -1;
         }
 
-        $windowSize = 4;
+        $packetMarkerSize = 4;
         $window = [];
-        $i = 0;
+        $charCountPacketMarker = [];
+        $characterCount = 0;
 
-        while (!feof($file)) {
-            $character = fgetc($file);
-            $window[$i] = $character;
-            $i++;
+        while (!feof($inputFileHandle)) {
+            $character = fgetc($inputFileHandle);
+            $window[$characterCount] = $character;
+            if (!isset($charCountPacketMarker[$character])) {
+                $charCountPacketMarker[$character] = 0;
+            }
+            $charCountPacketMarker[$character]++;
+            $characterCount++;
 
-            if ($i < $windowSize) {
+            if ($characterCount < $packetMarkerSize) {
                 continue;
             }
 
-            if (count(array_unique($window)) === $windowSize) {
-                return $i;
+            if (!array_filter($charCountPacketMarker, fn ($count) => $count > 1)) {
+                return $characterCount;
             }
 
-            array_shift($window);
+            $removedChar = array_shift($window);
+            $charCountPacketMarker[$removedChar]--;
         }
 
-        return $i;
+        return $characterCount;
     }
 }

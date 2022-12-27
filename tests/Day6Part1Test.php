@@ -11,32 +11,32 @@ final class Day6Part1Test extends TestCase
     {
         $this->assertEquals(
             7,
-            Day6Part1::findPositionOfMarker('test-input.txt')
+            (new Day6Part1())->findPositionOfPacketMarker('test-input.txt')
         );
 
         $this->assertEquals(
             5,
-            Day6Part1::findPositionOfMarker('test-input2.txt')
+            (new Day6Part1())->findPositionOfPacketMarker('test-input2.txt')
         );
 
         $this->assertEquals(
             6,
-            Day6Part1::findPositionOfMarker('test-input3.txt')
+            (new Day6Part1())->findPositionOfPacketMarker('test-input3.txt')
         );
 
         $this->assertEquals(
             10,
-            Day6Part1::findPositionOfMarker('test-input4.txt')
+            (new Day6Part1())->findPositionOfPacketMarker('test-input4.txt')
         );
 
         $this->assertEquals(
             11,
-            Day6Part1::findPositionOfMarker('test-input5.txt')
+            (new Day6Part1())->findPositionOfPacketMarker('test-input5.txt')
         );
 
         $this->assertEquals(
             1702,
-            Day6Part1::findPositionOfMarker('input.txt')
+            (new Day6Part1())->findPositionOfPacketMarker('input.txt')
         );
     }
 }
