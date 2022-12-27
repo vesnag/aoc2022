@@ -7,92 +7,96 @@ use AOC2022\day7\File;
 
 final class Day7Part1
 {
-    public function getSumOfTotalSize(string $filename): int
+    public function calculateSumOfTotalSizesBelowThreshold(string $filename): int
     {
-        $handle = fopen('input/day7/' . $filename, 'r');
-        if (!$handle) {
+        $inputFileHandle = fopen('input/day7/' . $filename, 'r');
+        if (!$inputFileHandle) {
             return 0;
         }
 
-        $sizeThreshold = 100000;
-        $rootDir = new Directory('/');
-        $currentDir = $rootDir;
+        $totalSizeThreshold = 100000;
+        $rootDirectory = new Directory('/');
+        $currentDirectory = $rootDirectory;
 
-        while (($line = fgets($handle)) !== false) {
-            $this->buildFilesystem(trim($line), $rootDir, $currentDir);
+        while (($line = fgets($inputFileHandle)) !== false) {
+            $this->buildFilesystem(trim($line), $rootDirectory, $currentDirectory);
         }
 
-        return $this->sumSizeOfDirectoriesBelowThresholdSize($rootDir, $sizeThreshold);
+        return $this->sumSizeOfDirectoriesBelowThresholdSize($rootDirectory, $totalSizeThreshold);
     }
 
-    private function buildFilesystem(string $terminalOutput, Directory $rootDir, Directory &$currentDir): void
+    private function buildFilesystem(string $inputLine, Directory $rootDirectory, Directory &$currentDirectory): void
     {
-        if (str_contains($terminalOutput, 'cd')) {
-            $dirName = trim(str_replace('$ cd ', '', $terminalOutput));
-            $currentDir = $this->changeDirectory($dirName, $currentDir, $rootDir);
+        if (preg_match('/^\$ (cd|ls)(.*)/', $inputLine, $regexMatches)) {
+            $command = $regexMatches[1];
+            $arguments = trim($regexMatches[2]);
+
+            if ('cd' === $command) {
+                $currentDirectory = $this->changeDirectory($arguments, $currentDirectory, $rootDirectory);
+                return;
+            }
+
+            if ('ls' === $command) {
+                return;
+            }
+        }
+
+        if (preg_match('/^dir (.*)/', $inputLine, $regexMatches)) {
+            $directoryName = $regexMatches[1];
+            $this->createDirectory($directoryName, $currentDirectory);
             return;
         }
 
-        if (str_contains($terminalOutput, 'ls')) {
-            return;
+        if (preg_match('/^(\d+) (.*)/', $inputLine, $regexMatches)) {
+            $fileSize = (int) $regexMatches[1];
+            $fileName = $regexMatches[2];
+            $file = new File($fileName, $fileSize);
+            $currentDirectory->addFile($file);
         }
-
-        if (str_contains($terminalOutput, 'dir')) {
-            $dirName = trim(str_replace('dir', '', $terminalOutput));
-            $this->createDirectory($dirName, $currentDir);
-
-            return;
-        }
-
-        /** @var int $size */
-        /** @var string $name */
-        list($size, $name) = explode(' ', $terminalOutput);
-        $file = new File($name, $size);
-        $currentDir->addFile($file);
     }
 
-    private function changeDirectory(string $dirName, Directory $currentDir, Directory $root): ?Directory
+    private function changeDirectory(string $directoryName, Directory $currentDirectory, Directory $rootDirectory): ?Directory
     {
-        if ('/' === $dirName) {
-            return $root;
+        if ('/' === $directoryName) {
+            return $rootDirectory;
         }
 
-        if ('..' === $dirName) {
-            return $currentDir->getParent();
+        if ('..' === $directoryName) {
+            return $currentDirectory->getParent();
         }
 
-        foreach ($currentDir->getDirectories() as $dir) {
-            if ($dir->getName() === $dirName) {
-                return $dir;
+        foreach ($currentDirectory->getDirectories() as $directory) {
+            if ($directory->getName() === $directoryName) {
+                return $directory;
             }
         }
 
         return null;
     }
 
-    private function sumSizeOfDirectoriesBelowThresholdSize(Directory $directory, int $sizeThreshold): int
+    private function sumSizeOfDirectoriesBelowThresholdSize(Directory $directory, int $totalSizeThreshold): int
     {
         $totalSize = 0;
 
-        if ($directory->getTotalSize() <= $sizeThreshold) {
+        if ($directory->getTotalSize() <= $totalSizeThreshold) {
             $totalSize += $directory->getTotalSize();
         }
 
-        foreach ($directory->getDirectories() as $subDir) {
-            $totalSize += $this->sumSizeOfDirectoriesBelowThresholdSize($subDir, $sizeThreshold);
+        foreach ($directory->getDirectories() as $subDirectory) {
+            $totalSize += $this->sumSizeOfDirectoriesBelowThresholdSize($subDirectory, $totalSizeThreshold);
         }
 
         return $totalSize;
     }
 
-    private function createDirectory(string $dirName, Directory $currentDir): void
+    private function createDirectory(string $directoryName, Directory $currentDirectory): void
     {
         /** @var array<int, Directory> $dir */
-        $dir = $currentDir->getDirectories();
-        if (!in_array($dirName, $dir)) {
-            $newDir = new Directory($dirName);
-            $newDir->setParent($currentDir);
-            $currentDir->addDirectory($newDir);
+        $dir = $currentDirectory->getDirectories();
+        if (!in_array($directoryName, $dir)) {
+            $newDirectory = new Directory($directoryName);
+            $newDirectory->setParent($currentDirectory);
+            $currentDirectory->addDirectory($newDirectory);
         }
     }
 }
