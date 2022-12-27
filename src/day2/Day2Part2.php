@@ -14,20 +14,22 @@ final class Day2Part2
 
     public function getTotalScore(string $filename): int
     {
-        $handle = fopen('input/day2/' . $filename, 'r');
-        if (!$handle) {
+        $inputFileHandle = fopen('input/day2/' . $filename, 'r');
+        if (!$inputFileHandle) {
             return 0;
         }
 
         $score = 0;
 
-        while (($line = fgets($handle)) !== false) {
+        while (($line = fgets($inputFileHandle)) !== false) {
             $roundDecisions = explode(' ', $line);
             $decision1Score = self::getDecisionScore(trim($roundDecisions[0]));
             $roundScore = self::getRoundScores(trim($roundDecisions[1]));
             $decision2Score = self::getSecondDecisionScore($roundScore, $decision1Score);
             $score += $decision2Score + $roundScore;
         }
+
+        fclose($inputFileHandle);
 
         return $score;
     }

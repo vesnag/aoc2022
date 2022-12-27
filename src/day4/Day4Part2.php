@@ -6,13 +6,13 @@ final class Day4Part2
 {
     public static function countOverlappedAssignments(string $filename): int
     {
-        $handle = fopen('input/day4/' . $filename, 'r');
-        if (!$handle) {
+        $inputFileHandle = fopen('input/day4/' . $filename, 'r');
+        if (!$inputFileHandle) {
             return 0;
         }
 
         $count = 0;
-        while (($line = fgets($handle)) !== false) {
+        while (($line = fgets($inputFileHandle)) !== false) {
             $sections = explode(',', $line);
             $firstSection = explode('-', $sections[0]);
             $secondSection = explode('-', $sections[1]);
@@ -21,6 +21,8 @@ final class Day4Part2
                 $count++;
             }
         }
+
+        fclose($inputFileHandle);
 
         return $count;
     }

@@ -6,13 +6,13 @@ final class Day3Part1
 {
     public static function getSumOfPriorities(string $filename): int
     {
-        $handle = fopen('input/day3/' . $filename, 'r');
-        if (!$handle) {
+        $inputFileHandle = fopen('input/day3/' . $filename, 'r');
+        if (!$inputFileHandle) {
             return 0;
         }
 
         $sum = 0;
-        while (($line = fgets($handle)) !== false) {
+        while (($line = fgets($inputFileHandle)) !== false) {
             $sum += self::getCommonItemTypeValue(trim($line));
         }
 

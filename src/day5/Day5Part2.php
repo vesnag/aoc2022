@@ -6,15 +6,15 @@ final class Day5Part2
 {
     public static function findTopCrate(string $filename): string
     {
-        $handle = fopen('input/day5/' . $filename, 'r');
-        if (!$handle) {
+        $inputFileHandle = fopen('input/day5/' . $filename, 'r');
+        if (!$inputFileHandle) {
             return '';
         }
 
         $skipLine = false;
         $stackFilled = false;
         $stack = [];
-        while (($line = fgets($handle)) !== false) {
+        while (($line = fgets($inputFileHandle)) !== false) {
             if ($skipLine) {
                 $skipLine = false;
                 continue;
@@ -30,6 +30,8 @@ final class Day5Part2
                 $skipLine = true;
             }
         }
+
+        fclose($inputFileHandle);
 
         ksort($stack);
         return implode('', array_map(fn ($el) => $el[0], $stack));

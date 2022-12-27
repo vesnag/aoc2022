@@ -6,19 +6,19 @@ final class Day1Part1
 {
     public static function getMaxTotalCalories(string $filename): int
     {
-        $handle = fopen('input/day1/' . $filename, 'r');
-        if (!$handle) {
+        $inputFileHandle = fopen('input/day1/' . $filename, 'r');
+        if (!$inputFileHandle) {
             return 0;
         }
 
         $maxSum = 0;
         $currentChunkSum = 0;
 
-        while (($line = fgets($handle)) !== false) {
+        while (($line = fgets($inputFileHandle)) !== false) {
             if (is_numeric($line)) {
                 $currentChunkSum += (int) $line;
 
-                if (!feof($handle)) {
+                if (!feof($inputFileHandle)) {
                     continue;
                 }
             }
@@ -29,7 +29,7 @@ final class Day1Part1
             $currentChunkSum = 0;
         }
 
-        fclose($handle);
+        fclose($inputFileHandle);
 
         return $maxSum;
     }

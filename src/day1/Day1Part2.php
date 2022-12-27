@@ -10,8 +10,8 @@ final class Day1Part2
             return 0;
         }
 
-        $handle = fopen('input/day1/' . $filename, 'r');
-        if (!$handle) {
+        $inputFileHandle = fopen('input/day1/' . $filename, 'r');
+        if (!$inputFileHandle) {
             return 0;
         }
 
@@ -21,11 +21,11 @@ final class Day1Part2
         $caloriesSum = 0;
         $i = 0;
         $maxCaloriesBucket = [];
-        while (($line = fgets($handle)) !== false) {
+        while (($line = fgets($inputFileHandle)) !== false) {
             if (is_numeric($line)) {
                 $currentChunkSum += (int) $line;
 
-                if (!feof($handle)) {
+                if (!feof($inputFileHandle)) {
                     continue;
                 }
             }
@@ -53,7 +53,7 @@ final class Day1Part2
             $i++;
         }
 
-        fclose($handle);
+        fclose($inputFileHandle);
 
         return $caloriesSum;
     }

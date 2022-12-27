@@ -10,18 +10,20 @@ final class Day2Part1
 
     public function getTotalScore(string $filename): int
     {
-        $handle = fopen('input/day2/' . $filename, 'r');
-        if (!$handle) {
+        $inputFileHandle = fopen('input/day2/' . $filename, 'r');
+        if (!$inputFileHandle) {
             return 0;
         }
 
         $score = 0;
-        while (($line = fgets($handle)) !== false) {
+        while (($line = fgets($inputFileHandle)) !== false) {
             $shapeDecisions = explode(' ', $line);
             $shapeDecision1 = self::getShape(trim($shapeDecisions[0]));
             $shapeDecision2 = self::getShape(trim($shapeDecisions[1]));
             $score += self::getRoundScores($shapeDecision1, $shapeDecision2);
         }
+
+        fclose($inputFileHandle);
 
         return $score;
     }

@@ -6,8 +6,8 @@ final class Day3Part2
 {
     public static function getSumOfGroupBadges(string $filename, int $numberOfRucksack): int
     {
-        $handle = fopen('input/day3/' . $filename, 'r');
-        if (!$handle) {
+        $inputFileHandle = fopen('input/day3/' . $filename, 'r');
+        if (!$inputFileHandle) {
             return 0;
         }
 
@@ -15,7 +15,7 @@ final class Day3Part2
         $rucksackGroup = [];
         $i = 0;
 
-        while (($line = fgets($handle)) !== false) {
+        while (($line = fgets($inputFileHandle)) !== false) {
             $line = trim($line);
 
             $rucksackGroup[] = $line;
@@ -28,9 +28,13 @@ final class Day3Part2
             }
         }
 
+        fclose($inputFileHandle);
+
         if (!empty($rucksackGroup)) {
             $sum += self::getSumOfGroupBadge($rucksackGroup);
         }
+
+
 
         return $sum;
     }
