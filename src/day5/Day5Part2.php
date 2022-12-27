@@ -43,7 +43,7 @@ final class Day5Part2
      */
     private function rearrangeStackAndGetTopCrates(string $line, array &$stack): void
     {
-        $numbers = $this->getNumbersFromString($line);
+        $numbers = self::getNumbersFromString($line);
         list($numberOfMoves, $from, $to) = $numbers;
         $from--;
         $to--;
@@ -87,7 +87,7 @@ final class Day5Part2
     /**
     * @return array<int, int>
     */
-    private function getNumbersFromString(string $string): array
+    private static function getNumbersFromString(string $string): array
     {
         preg_match_all('/\d+/', $string, $matches);
 

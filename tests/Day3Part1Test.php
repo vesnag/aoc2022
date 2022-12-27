@@ -11,12 +11,12 @@ final class Day3Part1Test extends TestCase
     {
         $this->assertEquals(
             157,
-            Day3Part1::getSumOfPriorities('test-input.txt')
+            (new Day3Part1)->getSumOfPriorities('test-input.txt')
         );
 
         $this->assertEquals(
             8349,
-            Day3Part1::getSumOfPriorities('input.txt')
+            (new Day3Part1)->getSumOfPriorities('input.txt')
         );
     }
 }

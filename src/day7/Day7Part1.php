@@ -22,7 +22,7 @@ final class Day7Part1
             $this->buildFilesystem(trim($line), $rootDirectory, $currentDirectory);
         }
 
-        return $this->sumSizeOfDirectoriesBelowThresholdSize($rootDirectory, $totalSizeThreshold);
+        return self::sumSizeOfDirectoriesBelowThresholdSize($rootDirectory, $totalSizeThreshold);
     }
 
     private function buildFilesystem(string $inputLine, Directory $rootDirectory, Directory &$currentDirectory): void
@@ -32,7 +32,7 @@ final class Day7Part1
             $arguments = trim($regexMatches[2]);
 
             if ('cd' === $command) {
-                $currentDirectory = $this->changeDirectory($arguments, $currentDirectory, $rootDirectory);
+                $currentDirectory = self::changeDirectory($arguments, $currentDirectory, $rootDirectory);
                 return;
             }
 
@@ -43,7 +43,7 @@ final class Day7Part1
 
         if (preg_match('/^dir (.*)/', $inputLine, $regexMatches)) {
             $directoryName = $regexMatches[1];
-            $this->createDirectory($directoryName, $currentDirectory);
+            self::createDirectory($directoryName, $currentDirectory);
             return;
         }
 
@@ -55,7 +55,7 @@ final class Day7Part1
         }
     }
 
-    private function changeDirectory(string $directoryName, Directory $currentDirectory, Directory $rootDirectory): ?Directory
+    private static function changeDirectory(string $directoryName, Directory $currentDirectory, Directory $rootDirectory): ?Directory
     {
         if ('/' === $directoryName) {
             return $rootDirectory;
@@ -74,7 +74,7 @@ final class Day7Part1
         return null;
     }
 
-    private function sumSizeOfDirectoriesBelowThresholdSize(Directory $directory, int $totalSizeThreshold): int
+    private static function sumSizeOfDirectoriesBelowThresholdSize(Directory $directory, int $totalSizeThreshold): int
     {
         $totalSize = 0;
 
@@ -83,13 +83,13 @@ final class Day7Part1
         }
 
         foreach ($directory->getDirectories() as $subDirectory) {
-            $totalSize += $this->sumSizeOfDirectoriesBelowThresholdSize($subDirectory, $totalSizeThreshold);
+            $totalSize += self::sumSizeOfDirectoriesBelowThresholdSize($subDirectory, $totalSizeThreshold);
         }
 
         return $totalSize;
     }
 
-    private function createDirectory(string $directoryName, Directory $currentDirectory): void
+    private static function createDirectory(string $directoryName, Directory $currentDirectory): void
     {
         /** @var array<int, Directory> $dir */
         $dir = $currentDirectory->getDirectories();

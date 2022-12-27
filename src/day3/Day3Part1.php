@@ -4,7 +4,7 @@ namespace AOC2022\day3;
 
 final class Day3Part1
 {
-    public static function getSumOfPriorities(string $filename): int
+    public function getSumOfPriorities(string $filename): int
     {
         $inputFileHandle = fopen('input/day3/' . $filename, 'r');
         if (!$inputFileHandle) {

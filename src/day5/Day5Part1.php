@@ -26,7 +26,7 @@ final class Day5Part1
                 continue;
             }
 
-            $isStackFilled = $this->fillStack($line, $stack);
+            $isStackFilled = self::fillStack($line, $stack);
             if (true === $isStackFilled) {
                 $mode = 'rearranging';
                 $skipLine = true;
@@ -46,7 +46,7 @@ final class Day5Part1
      */
     private function rearrangeStackAndGetTopCrates(string $line, array &$stack, array &$stackTopCrates): void
     {
-        $numbers = $this->getNumbersFromString($line);
+        $numbers = self::getNumbersFromString($line);
         list($numberOfMoves, $from, $to) = $numbers;
 
         for ($i = 0; $i < $numberOfMoves; $i++) {
@@ -67,7 +67,7 @@ final class Day5Part1
     /**
      * @param array<int, array<int, string>> $stack
      */
-    private function fillStack(string $line, array &$stack): bool
+    private static function fillStack(string $line, array &$stack): bool
     {
         $stackIndex = 0;
         for ($i = 1; isset($line[$i]); $i = $i+4) {
@@ -99,7 +99,7 @@ final class Day5Part1
     /**
     * @return array<int, int>
     */
-    private function getNumbersFromString(string $string): array
+    private static function getNumbersFromString(string $string): array
     {
         $matches = [];
         preg_match_all('/\d+/', $string, $matches);

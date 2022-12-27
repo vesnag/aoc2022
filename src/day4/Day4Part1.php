@@ -4,7 +4,7 @@ namespace AOC2022\day4;
 
 final class Day4Part1
 {
-    public static function countOverlappedAssignments(string $filename): int
+    public function countOverlappedAssignments(string $filename): int
     {
         $inputFileHandle = fopen('input/day4/' . $filename, 'r');
         if (!$inputFileHandle) {
@@ -17,7 +17,7 @@ final class Day4Part1
             $firstSection = explode('-', $sections[0]);
             $secondSection = explode('-', $sections[1]);
 
-            if (self::isFullyOverlap($firstSection, $secondSection)) {
+            if ($this->isFullyOverlap($firstSection, $secondSection)) {
                 $count++;
             }
         }
@@ -31,7 +31,7 @@ final class Day4Part1
    * @param array<int,string> $firstSection
    * @param array<int,string> $secondSection
    */
-  private static function isFullyOverlap(array $firstSection, array $secondSection): bool
+  private function isFullyOverlap(array $firstSection, array $secondSection): bool
   {
       $len1 = (int) $firstSection[1] - (int) $firstSection[0];
       $len2 = (int) $secondSection[1] - (int) $secondSection[0];

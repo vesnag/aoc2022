@@ -4,7 +4,7 @@ namespace AOC2022\day3;
 
 final class Day3Part2
 {
-    public static function getSumOfGroupBadges(string $filename, int $numberOfRucksack): int
+    public function getSumOfGroupBadges(string $filename, int $numberOfRucksack): int
     {
         $inputFileHandle = fopen('input/day3/' . $filename, 'r');
         if (!$inputFileHandle) {
