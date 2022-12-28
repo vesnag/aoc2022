@@ -11,12 +11,12 @@ final class Day4Part2Test extends TestCase
     {
         $this->assertEquals(
             4,
-            Day4Part2::countOverlappedAssignments('test-input.txt')
+            (new Day4Part2())->countOverlappedAssignments('test-input.txt')
         );
 
         $this->assertEquals(
             872,
-            Day4Part2::countOverlappedAssignments('input.txt')
+            (new Day4Part2())->countOverlappedAssignments('input.txt')
         );
     }
 }

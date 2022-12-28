@@ -13,11 +13,11 @@ final class Day4Part1
 
         $count = 0;
         while (($line = fgets($inputFileHandle)) !== false) {
-            $sections = explode(',', $line);
-            $firstSection = explode('-', $sections[0]);
-            $secondSection = explode('-', $sections[1]);
+            preg_match('/^([0-9]+)-([0-9]+),([0-9]+)-([0-9]+)$/', $line, $matches);
+            $firstSection = [$matches[1], $matches[2]];
+            $secondSection = [$matches[3], $matches[4]];
 
-            if ($this->isFullyOverlap($firstSection, $secondSection)) {
+            if (self::areAssignmentsFullyOverlapped($firstSection, $secondSection)) {
                 $count++;
             }
         }
@@ -31,25 +31,41 @@ final class Day4Part1
    * @param array<int,string> $firstSection
    * @param array<int,string> $secondSection
    */
-  private function isFullyOverlap(array $firstSection, array $secondSection): bool
+  private static function areAssignmentsFullyOverlapped(array $firstSection, array $secondSection): bool
   {
-      $len1 = (int) $firstSection[1] - (int) $firstSection[0];
-      $len2 = (int) $secondSection[1] - (int) $secondSection[0];
-
-      if ($len1 === $len2 && $firstSection[0] === $secondSection[0]) {
+      if (self::areSectionsEqualLengthAndStartPoint($firstSection, $secondSection)) {
           return true;
       }
 
-      // Check if the first section is fully contained within the second section.
-      if ($firstSection[0] >= $secondSection[0] && $firstSection[1] <= $secondSection[1]) {
+      if (self::isSectionFullyContainedWithinOtherSection($firstSection, $secondSection)) {
           return true;
       }
 
-      // Check if the second section is fully contained within the first section.
-      if ($secondSection[0] >= $firstSection[0] && $secondSection[1] <= $firstSection[1]) {
+      if (self::isSectionFullyContainedWithinOtherSection($secondSection, $firstSection)) {
           return true;
       }
 
       return false;
+  }
+
+  /**
+   * @param array<int,string> $firstSection
+   * @param array<int,string> $secondSection
+   */
+  private static function areSectionsEqualLengthAndStartPoint(array $firstSection, array $secondSection): bool
+  {
+      $len1 = (int) $firstSection[1] - (int) $firstSection[0];
+      $len2 = (int) $secondSection[1] - (int) $secondSection[0];
+
+      return $len1 === $len2 && $firstSection[0] === $secondSection[0];
+  }
+
+  /**
+   * @param array<int,string> $innerSection The inner section.
+   * @param array<int,string> $outerSection The outer section.
+   */
+  private static function isSectionFullyContainedWithinOtherSection(array $innerSection, array $outerSection): bool
+  {
+      return $innerSection[0] >= $outerSection[0] && $innerSection[1] <= $outerSection[1];
   }
 }

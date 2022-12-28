@@ -13,11 +13,11 @@ final class Day4Part2
 
         $count = 0;
         while (($line = fgets($inputFileHandle)) !== false) {
-            $sections = explode(',', $line);
-            $firstSection = explode('-', $sections[0]);
-            $secondSection = explode('-', $sections[1]);
+            preg_match('/^([0-9]+)-([0-9]+),([0-9]+)-([0-9]+)$/', $line, $matches);
+            $firstSection = [$matches[1], $matches[2]];
+            $secondSection = [$matches[3], $matches[4]];
 
-            if ($this->isOverlap($firstSection, $secondSection)) {
+            if (self::isOverlap($firstSection, $secondSection)) {
                 $count++;
             }
         }
@@ -31,7 +31,7 @@ final class Day4Part2
    * @param array<int,string> $firstSection
    * @param array<int,string> $secondSection
    */
-  private function isOverlap(array $firstSection, array $secondSection): bool
+  private static function isOverlap(array $firstSection, array $secondSection): bool
   {
       return !($secondSection[1] < $firstSection[0] || $secondSection[0] > $firstSection[1]);
   }
