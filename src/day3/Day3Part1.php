@@ -23,20 +23,16 @@ final class Day3Part1
     {
         $size = strlen($line);
 
-        $firstRucksackIndex = 0;
-        $firstRucksackIndexMaxIndex = $size / 2;
+        $leftIndexMax = $size / 2;
 
-        while ($firstRucksackIndex <= $firstRucksackIndexMaxIndex) {
-            $currentCharacter = $line[$firstRucksackIndex];
-            $secondRucksackIndex = $size - 1;
-            while ($secondRucksackIndex >= $firstRucksackIndexMaxIndex) {
-                $currentCharacterSecondRucksack = $line[$secondRucksackIndex];
+        for ($leftIndex = 0; $leftIndex < $leftIndexMax; $leftIndex++) {
+            $currentCharacter = $line[$leftIndex];
+            for ($rightIndex = $leftIndexMax; $rightIndex < $size; $rightIndex++) {
+                $currentCharacterSecondRucksack = $line[$rightIndex];
                 if ($currentCharacterSecondRucksack === $currentCharacter) {
                     return self::getCharValue($currentCharacter);
                 }
-                $secondRucksackIndex--;
             }
-            $firstRucksackIndex++;
         }
 
         return 0;
