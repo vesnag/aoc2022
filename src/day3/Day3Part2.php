@@ -13,28 +13,23 @@ final class Day3Part2
 
         $sum = 0;
         $rucksackGroup = [];
-        $i = 0;
 
         while (($line = fgets($inputFileHandle)) !== false) {
             $line = trim($line);
 
             $rucksackGroup[] = $line;
-            $i++;
 
-            if ($i === $numberOfRucksack) {
-                $sum += self::getSumOfGroupBadge($rucksackGroup);
+            if (count($rucksackGroup) === $numberOfRucksack) {
+                $sum += self::getBadgeSumForRucksacks($rucksackGroup);
                 $rucksackGroup = [];
-                $i = 0;
             }
         }
 
         fclose($inputFileHandle);
 
         if (!empty($rucksackGroup)) {
-            $sum += self::getSumOfGroupBadge($rucksackGroup);
+            $sum += self::getBadgeSumForRucksacks($rucksackGroup);
         }
-
-
 
         return $sum;
     }
@@ -42,7 +37,7 @@ final class Day3Part2
     /**
      * @param array<int, string> $rucksackGroup
     */
-    private static function getSumOfGroupBadge(array $rucksackGroup): int
+    private static function getBadgeSumForRucksacks(array $rucksackGroup): int
     {
         $i = 0;
         $len = strlen($rucksackGroup[0]);

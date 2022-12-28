@@ -11,12 +11,12 @@ final class Day3Part2Test extends TestCase
     {
         $this->assertEquals(
             70,
-            Day3Part2::getSumOfGroupBadges('test-input.txt', 3)
+            (new Day3Part2())->getSumOfGroupBadges('test-input.txt', 3)
         );
 
         $this->assertEquals(
             2681,
-            Day3Part2::getSumOfGroupBadges('input.txt', 3)
+            (new Day3Part2())->getSumOfGroupBadges('input.txt', 3)
         );
     }
 }
