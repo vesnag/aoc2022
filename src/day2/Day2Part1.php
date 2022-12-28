@@ -20,7 +20,7 @@ final class Day2Part1
             $shapeDecisions = explode(' ', $line);
             $shapeDecision1 = self::getShape(trim($shapeDecisions[0]));
             $shapeDecision2 = self::getShape(trim($shapeDecisions[1]));
-            $score += self::getRoundScores($shapeDecision1, $shapeDecision2);
+            $score += self::calculateRoundScore($shapeDecision1, $shapeDecision2);
         }
 
         fclose($inputFileHandle);
@@ -28,7 +28,7 @@ final class Day2Part1
         return $score;
     }
 
-    private static function getRoundScores(string $shape1, string $shape2): int
+    private static function calculateRoundScore(string $shape1, string $shape2): int
     {
         $shape2Score = self::getShapeScore($shape2);
         $outcomeScore = self::getOutcomeScores($shape1, $shape2);
