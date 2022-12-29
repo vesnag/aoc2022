@@ -11,27 +11,27 @@ final class Day1Part2Test extends TestCase
     {
         $this->assertEquals(
             24000,
-            Day1Part2::getMaxTotalCalories('test-input.txt', 1)
+            (new Day1Part2())->calculateTotalCalories('test-input.txt', 1)
         );
 
         $this->assertEquals(
             70698,
-            Day1Part2::getMaxTotalCalories('input.txt', 1)
+            (new Day1Part2())->calculateTotalCalories('input.txt', 1)
         );
 
         $this->assertEquals(
             45000,
-            Day1Part2::getMaxTotalCalories('test-input.txt', 3)
+            (new Day1Part2())->calculateTotalCalories('test-input.txt', 3)
         );
 
         $this->assertEquals(
             206643,
-            Day1Part2::getMaxTotalCalories('input.txt', 3)
+            (new Day1Part2())->calculateTotalCalories('input.txt', 3)
         );
 
         $this->assertEquals(
             0,
-            Day1Part2::getMaxTotalCalories('input.txt', 0)
+            (new Day1Part2())->calculateTotalCalories('input.txt', 0)
         );
     }
 }

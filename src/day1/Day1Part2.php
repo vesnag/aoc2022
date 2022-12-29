@@ -4,7 +4,7 @@ namespace AOC2022\day1;
 
 final class Day1Part2
 {
-    public static function getMaxTotalCalories(string $filename, int $numberOfElves): int
+    public function calculateTotalCalories(string $filename, int $numberOfElves): int
     {
         if ($numberOfElves <= 0) {
             return 0;
@@ -18,11 +18,10 @@ final class Day1Part2
         $currentChunkSum = 0;
         $currentMin = 0;
 
-        $caloriesSum = 0;
-        $i = 0;
-        $maxCaloriesBucket = [];
+        $totalCalories = 0;
+        $elvesWithHighestCalories = [];
         while (($line = fgets($inputFileHandle)) !== false) {
-            if (is_numeric($line)) {
+            if (!empty(trim($line))) {
                 $currentChunkSum += (int) $line;
 
                 if (!feof($inputFileHandle)) {
@@ -30,31 +29,28 @@ final class Day1Part2
                 }
             }
 
-            if ($i < $numberOfElves) {
-                $caloriesSum += $currentChunkSum;
-                $maxCaloriesBucket[] = $currentChunkSum;
-                $currentMin = min($maxCaloriesBucket);
+            if (count($elvesWithHighestCalories) < $numberOfElves) {
+                $totalCalories += $currentChunkSum;
+                $elvesWithHighestCalories[] = $currentChunkSum;
+                $currentMin = min($elvesWithHighestCalories);
                 $currentChunkSum = 0;
 
-                $i++;
                 continue;
             }
 
             if ($currentChunkSum > $currentMin) {
-                $caloriesSum += $currentChunkSum;
-                $maxCaloriesBucket[] = $currentChunkSum;
-                sort($maxCaloriesBucket);
-                $caloriesSum -= $maxCaloriesBucket[0];
-                array_shift($maxCaloriesBucket);
-                $currentMin = $maxCaloriesBucket[0];
+                $totalCalories += $currentChunkSum;
+                $elvesWithHighestCalories[] = $currentChunkSum;
+                sort($elvesWithHighestCalories);
+                $totalCalories -= $elvesWithHighestCalories[0];
+                array_shift($elvesWithHighestCalories);
+                $currentMin = $elvesWithHighestCalories[0];
             }
             $currentChunkSum = 0;
-
-            $i++;
         }
 
         fclose($inputFileHandle);
 
-        return $caloriesSum;
+        return $totalCalories;
     }
 }
